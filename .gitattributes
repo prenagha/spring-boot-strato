@@ -1,0 +1,18 @@
+
+# https://help.github.com/articles/dealing-with-line-endings/
+# https://github.com/Danimoth/gitattributes
+
+# force to binary
+*.jar binary
+*.war binary
+*.ear binary
+*.pdf binary
+*.zip binary
+*.gz  binary
+*.tar binary
+
+# UNIX line endings in text files
+* text=auto eol=lf
+
+# Allow Windows batch/script files to retain CRLF
+*.bat text eol=crlf
