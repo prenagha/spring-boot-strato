@@ -4,4 +4,4 @@ plugins {
 }
 
 rootProject.name = "todo-app"
-include("cdk","app")
+include("cdk", "app")

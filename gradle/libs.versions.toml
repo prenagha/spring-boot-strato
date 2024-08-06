@@ -1,6 +1,5 @@
-
 [libraries]
 guava = 'com.google.guava:guava:33.2.1-jre'
 cdklib = 'software.amazon.awscdk:aws-cdk-lib:2.151.0'
 constructs = 'software.constructs:constructs:10.3.0'
-
+strato = 'dev.stratospheric:cdk-constructs:0.1.15'

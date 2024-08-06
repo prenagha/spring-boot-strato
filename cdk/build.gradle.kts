@@ -1,4 +1,3 @@
-
 plugins {
     application
 }
@@ -10,6 +9,7 @@ repositories {
 dependencies {
     implementation(libs.cdklib)
     implementation(libs.constructs)
+    implementation(libs.strato)
 }
 
 testing {
@@ -27,5 +27,5 @@ java {
 }
 
 application {
-    mainClass = "com.renaghan.todo.cdk.App"
+    mainClass = "com.renaghan.todo.cdk.Infra"
 }
