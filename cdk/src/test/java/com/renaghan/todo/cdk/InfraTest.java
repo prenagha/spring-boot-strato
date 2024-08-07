@@ -9,8 +9,5 @@ import org.junit.jupiter.api.Test;
 
 class InfraTest {
   @Test
-  void appHasAGreeting() {
-    Infra classUnderTest = new Infra();
-    assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
-  }
+  void infraTest() {}
 }

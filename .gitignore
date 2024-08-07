@@ -2,3 +2,6 @@
 .gradle
 build
 .idea
+cdk.out
+node_modules
+cdk.json

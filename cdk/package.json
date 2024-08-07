@@ -1,0 +1,17 @@
+{
+  "name": "todo-cdk",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "ver": "cdk --version",
+    "bootstrap": "cdk bootstrap  --app '../gradlew --no-daemon --quiet :cdk:bootstrap'",
+    "todo:deploy" : "cdk deploy  --app '../gradlew --no-daemon --quiet :cdk:run' --require-approval never",
+    "todo:destroy": "cdk destroy --app '../gradlew --no-daemon --quiet :cdk:run' --force --require-approval never --all"
+  },
+  "devDependencies": {
+    "aws-cdk": "2.151.0"
+  },
+  "engines": {
+    "node": ">=16"
+  }
+}

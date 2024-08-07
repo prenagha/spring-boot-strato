@@ -1,3 +1,6 @@
+[versions]
+javaVer = '17'
+
 [libraries]
 guava = 'com.google.guava:guava:33.2.1-jre'
 cdklib = 'software.amazon.awscdk:aws-cdk-lib:2.151.0'
