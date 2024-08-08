@@ -1,32 +1,50 @@
+import org.gradle.kotlin.dsl.named
+
 plugins {
-    application
+    id("org.springframework.boot") version "3.3.2"
+    java
     idea
 }
+
+apply(plugin = "io.spring.dependency-management")
+
+group = "com.renaghan"
+version = "0.0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
 }
 
+val lib = extensions.getByType<VersionCatalogsExtension>().named("libs")
 dependencies {
-    implementation(libs.guava)
+    implementation(lib.findBundle("spring").get())
+    developmentOnly(lib.findBundle("springDev").get())
+    testImplementation(lib.findBundle("springTest").get())
+}
+
+tasks.named<JavaExec>("bootRun").configure {
+    jvmArgs = listOf(
+        "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005",
+        "-Dspring.profiles.active=dev",
+    )
+}
+
+tasks.jar {
+    enabled = false
 }
 
 testing {
     suites {
         val test by getting(JvmTestSuite::class) {
-            useJUnitJupiter("5.10.2")
+            useJUnitJupiter(lib.findVersion("junitVer").get().requiredVersion)
         }
     }
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(libs.versions.javaVer.get())
+        languageVersion = JavaLanguageVersion.of(lib.findVersion("javaVer").get().requiredVersion)
     }
-}
-
-application {
-    mainClass = "com.renaghan.todo.app.App"
 }
 
 idea {

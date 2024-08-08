@@ -1,8 +1,35 @@
 [versions]
-javaVer = '17'
+javaVer = "17"
+junitVer = "5.10.3"
+springVer = "3.3.2"
 
 [libraries]
-guava = 'com.google.guava:guava:33.2.1-jre'
-cdklib = 'software.amazon.awscdk:aws-cdk-lib:2.151.0'
-constructs = 'software.constructs:constructs:10.3.0'
-strato = 'dev.stratospheric:cdk-constructs:0.1.15'
+cdklib = "software.amazon.awscdk:aws-cdk-lib:2.151.0"
+constructs = "software.constructs:constructs:10.3.0"
+strato = "dev.stratospheric:cdk-constructs:0.1.15"
+findbugs= "com.google.code.findbugs:jsr305:3.0.2"
+
+thymeleaf   = { module = "org.springframework.boot:spring-boot-starter-thymeleaf",  version.ref = "springVer"}
+validation  = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springVer"}
+spring-web  = { module = "org.springframework.boot:spring-boot-starter-web",        version.ref = "springVer"}
+spring-dev  = { module = "org.springframework.boot:spring-boot-devtools",           version.ref = "springVer"}
+spring-test = { module = "org.springframework.boot:spring-boot-starter-test",       version.ref = "springVer"}
+
+[bundles]
+cdk = [
+    "cdklib",
+    "constructs",
+    "strato"
+]
+spring = [
+    "thymeleaf",
+    "validation",
+    "spring-web",
+    "findbugs"
+]
+springTest = [
+    "spring-test"
+]
+springDev = [
+    "spring-dev"
+]

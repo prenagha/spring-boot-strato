@@ -3,10 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "ver": "cdk --version",
-    "bootstrap": "cdk bootstrap  --app '../gradlew --no-daemon --quiet :cdk:bootstrap'",
-    "todo:deploy" : "cdk deploy  --app '../gradlew --no-daemon --quiet :cdk:run' --require-approval never",
-    "todo:destroy": "cdk destroy --app '../gradlew --no-daemon --quiet :cdk:run' --force --require-approval never --all"
+    "how-to-run":  "run via command line 'npm run foo:bar'",
+
+    "repository:deploy" : "cdk deploy  --app '../gradlew --no-daemon --quiet :cdk:repository' --require-approval never",
+    "repository:destroy": "cdk destroy --app '../gradlew --no-daemon --quiet :cdk:repository' --force --require-approval never --all",
+
+    "network:deploy" : "cdk deploy  --app '../gradlew --no-daemon --quiet :cdk:network' --require-approval never",
+    "network:destroy": "cdk destroy --app '../gradlew --no-daemon --quiet :cdk:network' --force --require-approval never --all",
+
+    "service:deploy" : "cdk deploy  --app '../gradlew --no-daemon --quiet :cdk:service' --require-approval never",
+    "service:destroy": "cdk destroy --app '../gradlew --no-daemon --quiet :cdk:service' --force --require-approval never --all"
+
   },
   "devDependencies": {
     "aws-cdk": "2.151.0"

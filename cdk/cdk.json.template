@@ -1,6 +1,4 @@
 {
-  "app": "../gradlew --no-daemon --quiet :cdk:run",
-
   "context": {
     "applicationName": "todo-app",
     "region": "eu-central-1",
