@@ -1,12 +1,9 @@
-import org.gradle.kotlin.dsl.named
-
 plugins {
-    id("org.springframework.boot") version "3.3.2"
     java
+    alias(libs.plugins.spring)
+    alias(libs.plugins.springDep)
     idea
 }
-
-apply(plugin = "io.spring.dependency-management")
 
 group = "com.renaghan"
 version = "0.0.1-SNAPSHOT"
@@ -15,14 +12,13 @@ repositories {
     mavenCentral()
 }
 
-val lib = extensions.getByType<VersionCatalogsExtension>().named("libs")
 dependencies {
-    implementation(lib.findBundle("spring").get())
-    developmentOnly(lib.findBundle("springDev").get())
-    testImplementation(lib.findBundle("springTest").get())
+    implementation(libs.bundles.spring)
+    developmentOnly(libs.bundles.springDev)
+    testImplementation(libs.bundles.springTest)
 }
 
-tasks.named<JavaExec>("bootRun").configure {
+tasks.bootRun.configure {
     jvmArgs = listOf(
         "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005",
         "-Dspring.profiles.active=dev",
@@ -35,15 +31,15 @@ tasks.jar {
 
 testing {
     suites {
-        val test by getting(JvmTestSuite::class) {
-            useJUnitJupiter(lib.findVersion("junitVer").get().requiredVersion)
+        @Suppress("UnstableApiUsage") val test by getting(JvmTestSuite::class) {
+            useJUnitJupiter(libs.versions.junitVer)
         }
     }
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(lib.findVersion("javaVer").get().requiredVersion)
+        languageVersion = JavaLanguageVersion.of(libs.versions.javaVer.get())
     }
 }
 

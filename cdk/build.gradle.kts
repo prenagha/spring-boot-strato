@@ -10,9 +10,8 @@ repositories {
     mavenCentral()
 }
 
-val lib = extensions.getByType<VersionCatalogsExtension>().named("libs")
 dependencies {
-    implementation(lib.findBundle("cdk").get())
+    implementation(libs.bundles.cdk)
 }
 
 tasks.register<JavaExec>("repository") {
@@ -33,15 +32,15 @@ tasks.register<JavaExec>("service") {
 
 testing {
     suites {
-        val test by getting(JvmTestSuite::class) {
-            useJUnitJupiter(lib.findVersion("junitVer").get().requiredVersion)
+        @Suppress("UnstableApiUsage") val test by getting(JvmTestSuite::class) {
+            useJUnitJupiter(libs.versions.junitVer)
         }
     }
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(lib.findVersion("javaVer").get().requiredVersion)
+        languageVersion = JavaLanguageVersion.of(libs.versions.javaVer.get())
     }
 }
 
