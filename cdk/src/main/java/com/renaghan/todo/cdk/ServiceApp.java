@@ -36,7 +36,7 @@ public class ServiceApp {
             app,
             "ServiceStack",
             StackProps.builder()
-                .stackName(environmentName + "-Service")
+                .stackName(environmentName + "-" + applicationName + "-Service")
                 .env(awsEnvironment)
                 .build());
 

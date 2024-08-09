@@ -9,11 +9,13 @@ constructs = "software.constructs:constructs:10.3.0"
 strato = "dev.stratospheric:cdk-constructs:0.1.15"
 findbugs= "com.google.code.findbugs:jsr305:3.0.2"
 
-thymeleaf   = { module = "org.springframework.boot:spring-boot-starter-thymeleaf",  version.ref = "springVer"}
-validation  = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springVer"}
-spring-web  = { module = "org.springframework.boot:spring-boot-starter-web",        version.ref = "springVer"}
-spring-dev  = { module = "org.springframework.boot:spring-boot-devtools",           version.ref = "springVer"}
-spring-test = { module = "org.springframework.boot:spring-boot-starter-test",       version.ref = "springVer"}
+thymeleaf    = { module = "org.springframework.boot:spring-boot-starter-thymeleaf",  version.ref = "springVer"}
+validation   = { module = "org.springframework.boot:spring-boot-starter-validation", version.ref = "springVer"}
+spring-web   = { module = "org.springframework.boot:spring-boot-starter-web",        version.ref = "springVer"}
+spring-mon   = { module = "org.springframework.boot:spring-boot-starter-actuator",   version.ref = "springVer"}
+spring-dev   = { module = "org.springframework.boot:spring-boot-devtools",           version.ref = "springVer"}
+spring-test  = { module = "org.springframework.boot:spring-boot-starter-test",       version.ref = "springVer"}
+spring-jetty = { module = "org.springframework.boot:spring-boot-starter-jetty",      version.ref = "springVer"}
 
 [bundles]
 cdk = [
@@ -22,10 +24,12 @@ cdk = [
     "strato"
 ]
 spring = [
+    "findbugs",
+    "spring-jetty",
+    "spring-mon",
+    "spring-web",
     "thymeleaf",
     "validation",
-    "spring-web",
-    "findbugs"
 ]
 springTest = [
     "spring-test"

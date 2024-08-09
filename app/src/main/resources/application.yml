@@ -1,0 +1,28 @@
+management:
+  endpoint:
+    health:
+      # show all on actuator info page
+      show-details: always
+      show-components: always
+  endpoints:
+    web:
+      # custom actuator base path
+      base-path: "/mgmt"
+      exposure:
+        # enable all actuator paths
+        include: "*"
+    jackson:
+      # use common mapper so we can pretty-print
+      isolated-object-mapper: false
+
+server:
+  compression:
+    # gzip compression for http responses
+    enabled: true
+
+spring:
+  jackson:
+    serialization:
+      # pretty-print json
+      indent-output: true
+      

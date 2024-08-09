@@ -6,7 +6,6 @@ plugins {
 }
 
 group = "com.renaghan"
-version = "0.0.1-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -14,8 +13,15 @@ repositories {
 
 dependencies {
     implementation(libs.bundles.spring)
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     developmentOnly(libs.bundles.springDev)
     testImplementation(libs.bundles.springTest)
+
+    modules {
+        module("org.springframework.boot:spring-boot-starter-tomcat") {
+            replacedBy("org.springframework.boot:spring-boot-starter-jetty", "Use Jetty instead of Tomcat")
+        }
+    }
 }
 
 tasks.bootRun.configure {
@@ -25,7 +31,7 @@ tasks.bootRun.configure {
     )
 }
 
-tasks.jar {
+tasks.jar.configure {
     enabled = false
 }
 
