@@ -25,4 +25,3 @@ spring:
     serialization:
       # pretty-print json
       indent-output: true
-      
