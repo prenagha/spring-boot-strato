@@ -38,7 +38,7 @@ jobs:
 
       - name: Build application
         working-directory: app
-        run: ./gradlew build --stacktrace
+        run: ../gradlew build --stacktrace
 
       - name: Zip build reports
         if: always()
