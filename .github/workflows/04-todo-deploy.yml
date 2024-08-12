@@ -37,7 +37,7 @@ jobs:
           cache: 'gradle'
 
       - name: Build application
-        working-directory: application
+        working-directory: app
         run: ./gradlew build --stacktrace
 
       - name: Zip build reports
@@ -90,7 +90,7 @@ jobs:
     timeout-minutes: 15
     if: ${{ false }}  # disabled for now as we ran out of AWS credits
     # if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
-    concurrency: todo-application-deployment
+    concurrency: todo-app-deploy
     steps:
 
       - name: Checkout code
