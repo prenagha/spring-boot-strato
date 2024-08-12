@@ -28,7 +28,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-          cache: 'maven'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-overwrite-existing: true
 
       - name: NPM install
         working-directory: cdk
@@ -52,7 +57,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-          cache: 'maven'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-overwrite-existing: true
 
       - name: NPM install
         working-directory: cdk
@@ -76,7 +86,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-          cache: 'maven'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-overwrite-existing: true
 
       - name: NPM install
         working-directory: cdk
@@ -100,7 +115,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-          cache: 'maven'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-overwrite-existing: true
 
       - name: NPM install
         working-directory: cdk
@@ -124,7 +144,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-          cache: 'maven'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-overwrite-existing: true
 
       - name: NPM install CDK dependencies
         working-directory: cdk
@@ -156,7 +181,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-          cache: 'maven'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-overwrite-existing: true
 
       - name: NPM install
         working-directory: cdk
@@ -180,7 +210,12 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 17
-          cache: 'maven'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-overwrite-existing: true
 
       - name: NPM install
         working-directory: cdk

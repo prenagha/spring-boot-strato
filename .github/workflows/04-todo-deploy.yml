@@ -61,8 +61,6 @@ jobs:
         run: echo "tag=$(date +'%Y%m%d%H%M%S')-${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
       - name: Publish Docker image to ECR registry
-        # disabled for now as we ran out of AWS credits
-        # if: ${{ false }}
         if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
         env:
           DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
@@ -90,11 +88,10 @@ jobs:
 
   deploy:
     runs-on: ubuntu-20.04
-    name: Deploy Todo App
+    name: Deploy Todo App on ECS
     needs: build-and-publish
     timeout-minutes: 15
-    if: ${{ false }}  # disabled for now as we ran out of AWS credits
-    # if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
+    if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
     concurrency: todo-app-deploy
     steps:
 
@@ -107,6 +104,11 @@ jobs:
           distribution: 'temurin'
           java-version: 17
           cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-overwrite-existing: true
 
       - name: NPM install
         working-directory: cdk
