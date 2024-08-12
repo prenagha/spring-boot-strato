@@ -4,6 +4,5 @@ build
 .idea
 cdk.out
 node_modules
-cdk.json
 package-lock.json
 cdk.context.json

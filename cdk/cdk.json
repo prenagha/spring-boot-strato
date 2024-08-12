@@ -1,0 +1,34 @@
+{
+  "watch": {
+    "include": [
+      "**"
+    ],
+    "exclude": [
+      "README.md",
+      "cdk*.json",
+      "build",
+      "build.gradle.kts",
+      "src/test"
+    ]
+  },
+  "context": {
+    "accountId" : "203771817192",
+    "region": "us-east-2",
+    "environmentName": "staging",
+    "applicationName": "todo-app",
+    "dockerRepositoryName": "todo-app",
+    "dockerImageTag": "latest",
+
+    "applicationUrl": "https://todo.renaghan.com",
+    "loginPageDomainPrefix": "todo-dev",
+    "springProfile": "aws",
+    "activeMqUsername": "activemqUser",
+    "canaryUsername": "canary",
+    "canaryUserPassword": "SECRET_OVERRIDDEN_BY_WORKFLOW",
+    "confirmationEmail": "todo@padraic.renaghan.com",
+    "applicationDomain": "todo.renaghan.com",
+    "sslCertificateArn": "arn:aws:acm:us-east-2:xxx:certificate/xxx",
+    "hostedZoneDomain": "todo.renaghan.com",
+    "githubToken": "SECRET_OVERRIDDEN_BY_WORKFLOW"
+  }
+}
