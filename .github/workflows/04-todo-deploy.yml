@@ -21,7 +21,7 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-20.04
-    name: Build and publish Todo App
+    name: Build and publish Todo App to ECR
     outputs:
       dockerImageTag: ${{ steps.dockerImageTag.outputs.tag }}
     steps:
