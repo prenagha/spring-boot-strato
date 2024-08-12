@@ -1,7 +1,19 @@
 {
+  "watch": {
+    "include": [
+      "**"
+    ],
+    "exclude": [
+      "README.md",
+      "cdk*.json",
+      "build",
+      "build.gradle.kts",
+      "src/test"
+    ]
+  },
   "context": {
     "applicationName": "todo-app",
-    "region": "eu-central-1",
+    "region": "us-east-2",
     "accountId": "xxx",
     "dockerRepositoryName": "todo-app",
     "dockerImageTag": "DYNAMICALLY_OVERRIDDEN_BY_WORKFLOW",

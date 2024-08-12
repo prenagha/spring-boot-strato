@@ -5,6 +5,8 @@
   "scripts": {
     "how-to-run":  "run via command line 'npm run foo:bar'",
 
+    "bootstrap" : "cdk bootstrap  --app '../gradlew --no-daemon --quiet :cdk:repository'",
+
     "repository:deploy" : "cdk deploy  --app '../gradlew --no-daemon --quiet :cdk:repository' --require-approval never",
     "repository:destroy": "cdk destroy --app '../gradlew --no-daemon --quiet :cdk:repository' --force --require-approval never --all",
 
