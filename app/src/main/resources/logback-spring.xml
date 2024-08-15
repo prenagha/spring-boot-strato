@@ -4,17 +4,17 @@
   <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
   <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
-  <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder class="de.siegmar.logbackawslogsjsonencoder.AwsJsonLogEncoder"/>
-  </appender>
-
   <springProfile name="dev">
-    <root level="INFO">
+    <root level="DEBUG">
       <appender-ref ref="CONSOLE"/>
     </root>
   </springProfile>
 
   <springProfile name="aws">
+    <appender name="JSON" class="ch.qos.logback.core.ConsoleAppender">
+      <encoder class="de.siegmar.logbackawslogsjsonencoder.AwsJsonLogEncoder"/>
+    </appender>
+
     <root level="INFO">
       <appender-ref ref="JSON"/>
     </root>

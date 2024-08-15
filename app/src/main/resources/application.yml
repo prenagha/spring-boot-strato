@@ -34,6 +34,12 @@ server:
   forward-headers-strategy: framework
 
 spring:
+  application:
+    name: todo-app
+  cloud:
+    #aws: region: static: us-east-2
+    sns:
+      enabled: false
   jackson:
     serialization:
       # pretty-print json
@@ -42,12 +48,8 @@ spring:
     hibernate:
       ddl-auto: validate
     open-in-view: false
-  application:
-    name: todo-app
-  cloud:
-    #aws: region: static: us-east-2
-      sns:
-        enabled: false
+  main:
+    banner-mode: off
 
 # configuration of error-handling-spring-boot-starter (https://wimdeblauwe.github.io/error-handling-spring-boot-starter/)
 error:

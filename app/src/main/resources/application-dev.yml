@@ -17,6 +17,12 @@ spring:
       endpoint: http://localhost:4566
       region:
         static: us-east-2
+  mvc:
+    log-request-details: true
+
+logging:
+  level:
+    web: debug
 
 management:
   cloudwatch:

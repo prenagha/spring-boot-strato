@@ -33,13 +33,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     // auth
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-    implementation("software.amazon.awssdk:cognitoidentityprovider")
+    //implementation("org.springframework.boot:spring-boot-starter-security")
+    //implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    //implementation("software.amazon.awssdk:cognitoidentityprovider")
+    //implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
 
     // web stuff
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
-    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
     implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
     implementation("org.webjars:webjars-locator-core")
     implementation("org.webjars:bootstrap:4.6.1")
