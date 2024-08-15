@@ -40,13 +40,13 @@ jobs:
         working-directory: cdk
         run: npm install
 
-      - name: Deploy Network stack
-        working-directory: cdk
-        run: npm run network:deploy -- -c environmentName=${{ github.event.inputs.environmentName }}
-
       - name: Deploy Certificate stack
         working-directory: cdk
         run: npm run certificate:deploy -- -c environmentName=${{ github.event.inputs.environmentName }}
+
+      - name: Deploy Network stack
+        working-directory: cdk
+        run: npm run network:deploy -- -c environmentName=${{ github.event.inputs.environmentName }}
 
       - name: Deploy DNS stack
         working-directory: cdk
