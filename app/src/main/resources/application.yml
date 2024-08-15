@@ -1,4 +1,10 @@
 management:
+  cloudwatch:
+    metrics:
+      export:
+        enabled: true
+        namespace: todo-app
+        step: 1m
   endpoint:
     health:
       # show all on actuator info page
@@ -14,14 +20,36 @@ management:
     jackson:
       # use common mapper so we can pretty-print
       isolated-object-mapper: false
+  health:
+    jms:
+      enabled: false # don't verify the health of the JMS broker
+  metrics:
+    tags:
+      environment: ${ENVIRONMENT_NAME}
 
 server:
   compression:
     # gzip compression for http responses
     enabled: true
+  forward-headers-strategy: framework
 
 spring:
   jackson:
     serialization:
       # pretty-print json
       indent-output: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  application:
+    name: todo-app
+  cloud:
+    #aws: region: static: us-east-2
+      sns:
+        enabled: false
+
+# configuration of error-handling-spring-boot-starter (https://wimdeblauwe.github.io/error-handling-spring-boot-starter/)
+error:
+  handling:
+    exception-logging: WITH_STACKTRACE

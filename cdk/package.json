@@ -5,16 +5,25 @@
   "scripts": {
     "how-to-run":  "run via command line 'npm run foo:bar'",
 
-    "bootstrap" : "cdk bootstrap  --app '../gradlew --no-daemon --quiet :cdk:repository'",
+    "bootstrap" : "cdk bootstrap  --app '../gradlew --quiet :cdk:repository'",
 
-    "repository:deploy" : "cdk deploy  --app '../gradlew --no-daemon --quiet :cdk:repository' --require-approval never",
-    "repository:destroy": "cdk destroy --app '../gradlew --no-daemon --quiet :cdk:repository' --force --require-approval never --all",
+    "repository:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:repository' --require-approval never",
+    "repository:destroy": "cdk destroy --app '../gradlew --quiet :cdk:repository' --force --require-approval never --all",
 
-    "network:deploy" : "cdk deploy  --app '../gradlew --no-daemon --quiet :cdk:network' --require-approval never",
-    "network:destroy": "cdk destroy --app '../gradlew --no-daemon --quiet :cdk:network' --force --require-approval never --all",
+    "certificate:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:certificate' --require-approval never",
+    "certificate:destroy": "cdk destroy --app '../gradlew --quiet :cdk:certificate' --force --require-approval never --all",
 
-    "service:deploy" : "cdk deploy  --app '../gradlew --no-daemon --quiet :cdk:service' --require-approval never",
-    "service:destroy": "cdk destroy --app '../gradlew --no-daemon --quiet :cdk:service' --force --require-approval never --all"
+    "network:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:network' --require-approval never",
+    "network:destroy": "cdk destroy --app '../gradlew --quiet :cdk:network' --force --require-approval never --all",
+
+    "domain:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:domain' --require-approval never",
+    "domain:destroy": "cdk destroy --app '../gradlew --quiet :cdk:domain' --force --require-approval never --all",
+
+    "service:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:service' --require-approval never",
+    "service:destroy": "cdk destroy --app '../gradlew --quiet :cdk:service' --force --require-approval never --all",
+
+    "cognito:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:cognito' --require-approval never",
+    "cognito:destroy": "cdk destroy --app '../gradlew --quiet :cdk:cognito' --force --require-approval never --all"
 
   },
   "devDependencies": {

@@ -1,59 +1,65 @@
 package com.renaghan.todo.cdk;
 
-import dev.stratospheric.cdk.ApplicationEnvironment;
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.Service;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import software.amazon.awscdk.App;
-import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 
 /** CDK App */
 public class ServiceApp {
   public static void main(String[] args) {
-    App app = new App();
-    Environment awsEnvironment = DockerRepositoryApp.makeEnv(app);
-
-    String environmentName = (String) app.getNode().tryGetContext("environmentName");
-    Objects.requireNonNull(environmentName, "Environment Name is required");
-
-    String applicationName = (String) app.getNode().tryGetContext("applicationName");
-    Objects.requireNonNull(applicationName, "Application Name is required");
-
-    String dockerRepositoryName = (String) app.getNode().tryGetContext("dockerRepositoryName");
-    Objects.requireNonNull(dockerRepositoryName, "Docker Repository Name is required");
-
-    String dockerImageTag = (String) app.getNode().tryGetContext("dockerImageTag");
-    Objects.requireNonNull(dockerRepositoryName, "Docker Image Tag is required");
-
-    ApplicationEnvironment applicationEnvironment =
-        new ApplicationEnvironment(applicationName, environmentName);
+    CDKApp app = new CDKApp();
 
     Stack serviceStack =
         new Stack(
             app,
             "ServiceStack",
             StackProps.builder()
-                .stackName(environmentName + "-" + applicationName + "-Service")
-                .env(awsEnvironment)
+                .stackName(
+                    app.appEnv().getEnvironmentName()
+                        + "-"
+                        + app.appEnv().getApplicationName()
+                        + "-Service")
+                .env(app.awsEnv())
                 .build());
 
     Network.NetworkOutputParameters networkOutputParameters =
         Network.getOutputParametersFromParameterStore(
-            serviceStack, applicationEnvironment.getEnvironmentName());
+            serviceStack, app.appEnv().getEnvironmentName());
 
-    Service service =
-        new Service(
-            serviceStack,
-            "Service",
-            awsEnvironment,
-            applicationEnvironment,
-            new Service.ServiceInputParameters(
-                new Service.DockerImageSource(dockerRepositoryName, dockerImageTag), Map.of()),
-            networkOutputParameters);
+    CognitoStack.CognitoOutputParameters cognitoOutputParameters =
+        CognitoStack.getOutputParametersFromParameterStore(serviceStack, app.appEnv());
+
+    Service.ServiceInputParameters inputParameters =
+        new Service.ServiceInputParameters(
+            new Service.DockerImageSource(
+                app.getContext("dockerRepositoryName"), app.getContext("dockerImageTag")),
+            environmentVariables(app.getContext("springProfile"), cognitoOutputParameters));
+
+    new Service(
+        serviceStack,
+        "Service",
+        app.awsEnv(),
+        app.appEnv(),
+        inputParameters,
+        networkOutputParameters);
 
     app.synth();
+  }
+
+  static Map<String, String> environmentVariables(
+      String springProfile, CognitoStack.CognitoOutputParameters cognitoOutputParameters) {
+    Map<String, String> vars = new HashMap<>();
+
+    vars.put("SPRING_PROFILES_ACTIVE", springProfile);
+    vars.put("COGNITO_CLIENT_ID", cognitoOutputParameters.userPoolClientId());
+    vars.put("COGNITO_CLIENT_SECRET", cognitoOutputParameters.userPoolClientSecret());
+    vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.userPoolId());
+    vars.put("COGNITO_LOGOUT_URL", cognitoOutputParameters.logoutUrl());
+    vars.put("COGNITO_PROVIDER_URL", cognitoOutputParameters.providerUrl());
+
+    return vars;
   }
 }

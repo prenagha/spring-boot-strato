@@ -1,0 +1,30 @@
+spring:
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+  web:
+    resources:
+      static-locations: file:src/main/resources/static/
+      cache:
+        period: 0
+  jpa:
+    show-sql: true
+  cloud:
+    aws:
+      credentials:
+        secret-key: foo
+        access-key: bar
+      endpoint: http://localhost:4566
+      region:
+        static: us-east-2
+
+management:
+  cloudwatch:
+    metrics:
+      export:
+        enabled: false
+
+# noinspection SpringBootApplicationYaml
+custom:
+  environment: local
+

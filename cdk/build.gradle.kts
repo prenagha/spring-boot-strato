@@ -11,7 +11,9 @@ repositories {
 }
 
 dependencies {
-    implementation(libs.bundles.cdk)
+    implementation("software.amazon.awscdk:aws-cdk-lib:2.151.0")
+    implementation("software.constructs:constructs:10.3.0")
+    implementation("dev.stratospheric:cdk-constructs:0.1.15")
 }
 
 tasks.register<JavaExec>("repository") {
@@ -19,9 +21,19 @@ tasks.register<JavaExec>("repository") {
     mainClass = "com.renaghan.todo.cdk.DockerRepositoryApp"
     classpath = project.sourceSets["main"].runtimeClasspath
 }
+tasks.register<JavaExec>("certificate") {
+    group = "app"
+    mainClass = "com.renaghan.todo.cdk.CertificateApp"
+    classpath = project.sourceSets["main"].runtimeClasspath
+}
 tasks.register<JavaExec>("network") {
     group = "app"
     mainClass = "com.renaghan.todo.cdk.NetworkApp"
+    classpath = project.sourceSets["main"].runtimeClasspath
+}
+tasks.register<JavaExec>("domain") {
+    group = "app"
+    mainClass = "com.renaghan.todo.cdk.DomainApp"
     classpath = project.sourceSets["main"].runtimeClasspath
 }
 tasks.register<JavaExec>("service") {
@@ -29,18 +41,24 @@ tasks.register<JavaExec>("service") {
     mainClass = "com.renaghan.todo.cdk.ServiceApp"
     classpath = project.sourceSets["main"].runtimeClasspath
 }
+tasks.register<JavaExec>("cognito") {
+    group = "app"
+    mainClass = "com.renaghan.todo.cdk.CognitoApp"
+    classpath = project.sourceSets["main"].runtimeClasspath
+}
 
 testing {
     suites {
-        @Suppress("UnstableApiUsage") val test by getting(JvmTestSuite::class) {
-            useJUnitJupiter(libs.versions.junitVer)
+        @Suppress("UnstableApiUsage")
+        getting(JvmTestSuite::class) {
+            useJUnitJupiter("5.10.3")
         }
     }
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(libs.versions.javaVer.get())
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 

@@ -18,17 +18,15 @@
     "applicationName": "todo-app",
     "dockerRepositoryName": "todo-app",
     "dockerImageTag": "latest",
+    "applicationUrl": "https://todo-app.renaghan.net",
+    "loginPageDomainPrefix": "todo-app",
+    "applicationDomain": "todo-app.renaghan.net",
+    "hostedZoneDomain": "renaghan.net",
 
-    "applicationUrl": "https://todo.renaghan.com",
-    "loginPageDomainPrefix": "todo-dev",
     "springProfile": "aws",
     "activeMqUsername": "activemqUser",
     "canaryUsername": "canary",
     "canaryUserPassword": "SECRET_OVERRIDDEN_BY_WORKFLOW",
-    "confirmationEmail": "todo@padraic.renaghan.com",
-    "applicationDomain": "todo.renaghan.com",
-    "sslCertificateArn": "arn:aws:acm:us-east-2:xxx:certificate/xxx",
-    "hostedZoneDomain": "todo.renaghan.com",
-    "githubToken": "SECRET_OVERRIDDEN_BY_WORKFLOW"
+    "confirmationEmail": "todo-app@padraic.renaghan.com"
   }
 }

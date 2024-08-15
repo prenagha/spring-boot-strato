@@ -1,4 +1,4 @@
-package com.renaghan.todo.app;
+package com.renaghan.todo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

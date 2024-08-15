@@ -1,7 +1,9 @@
+@file:Suppress("PackageUpdate")
+
 plugins {
     java
-    alias(libs.plugins.spring)
-    alias(libs.plugins.springDep)
+    id("org.springframework.boot") version "3.3.2"
+    id("io.spring.dependency-management") version "1.1.6"
     idea
 }
 
@@ -11,11 +13,40 @@ repositories {
     mavenCentral()
 }
 
+val awsSpringVersion = "3.1.1"
+
+dependencyManagement {
+    imports {
+        mavenBom("io.awspring.cloud:spring-cloud-aws-dependencies:${awsSpringVersion}")
+    }
+}
+
 dependencies {
-    implementation(libs.bundles.spring)
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-jetty")
+    implementation("org.springframework.boot:spring-boot-configuration-processor")
+
+    // monitoring endpoints
     implementation("org.springframework.boot:spring-boot-starter-actuator")
-    developmentOnly(libs.bundles.springDev)
-    testImplementation(libs.bundles.springTest)
+
+    // auth
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("software.amazon.awssdk:cognitoidentityprovider")
+
+    // web stuff
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6")
+    implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
+    implementation("org.webjars:webjars-locator-core")
+    implementation("org.webjars:bootstrap:4.6.1")
+    implementation("org.webjars:font-awesome:5.15.3")
+
+
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     modules {
         module("org.springframework.boot:spring-boot-starter-tomcat") {
@@ -37,15 +68,16 @@ tasks.jar.configure {
 
 testing {
     suites {
-        @Suppress("UnstableApiUsage") val test by getting(JvmTestSuite::class) {
-            useJUnitJupiter(libs.versions.junitVer)
+        @Suppress("UnstableApiUsage")
+        getting(JvmTestSuite::class) {
+            useJUnitJupiter("5.10.3")
         }
     }
 }
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(libs.versions.javaVer.get())
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
