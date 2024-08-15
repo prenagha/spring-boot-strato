@@ -27,7 +27,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jetty")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
 
-    implementation("de.siegmar:logback-awslogs-json-encoder:2.0.1")
+    implementation("de.siegmar:logback-awslogs-json-encoder:2.0.0")
 
     // monitoring endpoints
     implementation("org.springframework.boot:spring-boot-starter-actuator")
