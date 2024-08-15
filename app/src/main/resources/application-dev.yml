@@ -21,8 +21,8 @@ spring:
     log-request-details: true
 
 logging:
-  level:
-    web: debug
+  pattern:
+    console: "%d{HH:mm:ss.S} %-5level %-40.40logger{39} %message%n%rootException{full}"
 
 management:
   cloudwatch:
