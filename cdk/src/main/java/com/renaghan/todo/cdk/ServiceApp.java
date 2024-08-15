@@ -45,9 +45,10 @@ public class ServiceApp {
 
     Service.ServiceInputParameters inputParameters =
         new Service.ServiceInputParameters(
-            new Service.DockerImageSource(
-                app.getContext("dockerRepositoryName"), app.getContext("dockerImageTag")),
-            vars);
+                new Service.DockerImageSource(
+                    app.getContext("dockerRepositoryName"), app.getContext("dockerImageTag")),
+                vars)
+            .withHealthCheckPath("/mgmt/health");
 
     new Service(
         serviceStack,
