@@ -38,10 +38,10 @@ jobs:
         working-directory: cdk
         run: npm install
 
-      - name: Deploy CDK bootstrap stack
+      - name: CDK Bootstrap
         working-directory: cdk
         run: npm run bootstrap
 
-      - name: Deploy Docker registry
+      - name: Deploy Docker Registry stack
         working-directory: cdk
         run: npm run repository:deploy

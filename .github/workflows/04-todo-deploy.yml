@@ -60,7 +60,7 @@ jobs:
         id: dockerImageTag
         run: echo "tag=$(date +'%Y%m%d%H%M%S')-${GITHUB_SHA}" >> $GITHUB_OUTPUT
 
-      - name: Publish Docker image to ECR registry
+      - name: Publish Docker image to ECR
         if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
         env:
           DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
@@ -114,7 +114,7 @@ jobs:
         working-directory: cdk
         run: npm install
 
-      - name: Deploy service stack
+      - name: Deploy Service stack
         working-directory: cdk
         run: npm run service:deploy -- -c dockerImageTag=${{ needs.build-and-publish.outputs.dockerImageTag }}
 
