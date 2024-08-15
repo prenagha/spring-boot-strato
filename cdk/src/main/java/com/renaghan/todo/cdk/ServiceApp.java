@@ -2,6 +2,7 @@ package com.renaghan.todo.cdk;
 
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.Service;
+import java.util.HashMap;
 import java.util.Map;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
@@ -28,20 +29,17 @@ public class ServiceApp {
         Network.getOutputParametersFromParameterStore(
             serviceStack, app.appEnv().getEnvironmentName());
 
+    Map<String, String> vars = new HashMap<>();
+    vars.put("SPRING_PROFILES_ACTIVE", app.getContext("springProfile"));
     /*
     CognitoStack.CognitoOutputParameters cognitoOutputParameters =
         CognitoStack.getOutputParametersFromParameterStore(serviceStack, app.appEnv());
-    Map<String, String> vars =
-        environmentVariables(app.getContext("springProfile"), cognitoOutputParameters);
-    vars.put("SPRING_PROFILES_ACTIVE", springProfile);
     vars.put("COGNITO_CLIENT_ID", cognitoOutputParameters.userPoolClientId());
     vars.put("COGNITO_CLIENT_SECRET", cognitoOutputParameters.userPoolClientSecret());
     vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.userPoolId());
     vars.put("COGNITO_LOGOUT_URL", cognitoOutputParameters.logoutUrl());
     vars.put("COGNITO_PROVIDER_URL", cognitoOutputParameters.providerUrl());
      */
-
-    Map<String, String> vars = Map.of();
 
     Service.ServiceInputParameters inputParameters =
         new Service.ServiceInputParameters(
