@@ -73,19 +73,6 @@ jobs:
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app:${DOCKER_IMAGE_TAG}
           docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/todo-app:latest
 
-  #      Superseded by GitHub Action's concurrency support, see below
-  #      - name: Sending deployment event to queue
-  #        if: github.ref == 'refs/heads/main'
-  #        env:
-  #          DOCKER_IMAGE_TAG: ${{ steps.dockerImageTag.outputs.tag }}
-  #        run: |
-  #          export EVENT_PAYLOAD="{\"commitSha\": \"$GITHUB_SHA\", \"ref\": \"main\", \"owner\": \"stratospheric-dev\", \"repo\": \"stratospheric\", \"workflowId\": \"05-update-todo-app-in-staging.yml\", \"dockerImageTag\": \"$DOCKER_IMAGE_TAG\"}"
-  #          aws sqs send-message \
-  #            --queue-url=https://sqs.eu-central-1.amazonaws.com/221875718260/todo-app-deploymentsQueue.fifo \
-  #            --message-group-id default \
-  #            --message-deduplication-id $GITHUB_SHA \
-  #            --message-body "$EVENT_PAYLOAD"
-
   deploy:
     runs-on: ubuntu-20.04
     name: Deploy Todo App on ECS

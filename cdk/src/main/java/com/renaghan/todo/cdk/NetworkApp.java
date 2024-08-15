@@ -17,7 +17,7 @@ public class NetworkApp {
                 .env(app.awsEnv())
                 .build());
     CertificateStack.CertificateOutputParameters certOutput =
-        CertificateStack.getOutputParametersFromParameterStore(app);
+        CertificateStack.getOutputParametersFromParameterStore(app, networkStack);
     new Network(
         networkStack,
         "Network",

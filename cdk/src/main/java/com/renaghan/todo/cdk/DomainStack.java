@@ -30,7 +30,7 @@ public class DomainStack extends Stack {
                 .build());
 
     Network.NetworkOutputParameters networkOutputParameters =
-        Network.getOutputParametersFromParameterStore(app, app.appEnv().getEnvironmentName());
+        Network.getOutputParametersFromParameterStore(this, app.appEnv().getEnvironmentName());
 
     IApplicationLoadBalancer applicationLoadBalancer =
         ApplicationLoadBalancer.fromApplicationLoadBalancerAttributes(
