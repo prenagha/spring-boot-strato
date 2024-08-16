@@ -17,6 +17,10 @@ class CDKApp extends App {
     return appEnv.getEnvironmentName() + "." + val;
   }
 
+  protected String getApplicationURL() {
+    return "https://" + getApplicationDomain();
+  }
+
   protected String getContext(String name) {
     if ("applicationDomain".equals(name))
       throw new IllegalStateException("Use getApplicationDomain() method");

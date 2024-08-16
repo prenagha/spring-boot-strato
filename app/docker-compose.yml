@@ -1,0 +1,29 @@
+name: todo_localstack
+services:
+  activemq:
+    image: stratospheric/activemq-docker-image
+    ports:
+      - "5672:5672"
+      - "61613:61613"
+      - "61614:61614"
+      - "61616:61616"
+  localstack:
+    image: localstack/localstack
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=sqs,ses,dynamodb
+    volumes:
+      - ./src/test/resources/localstack/local-aws-infrastructure.sh:/docker-entrypoint-initaws.d/init.sh
+  keycloak:
+    image: quay.io/keycloak/keycloak:18.0.0-legacy
+    ports:
+      - "8888:8080"
+      - "9990:9990"
+    environment:
+      - KEYCLOAK_USER=keycloak
+      - KEYCLOAK_PASSWORD=keycloak
+      - DB_VENDOR=h2
+      - JAVA_OPTS=-Dkeycloak.migration.action=import -Dkeycloak.migration.provider=singleFile -Dkeycloak.migration.file=/tmp/stratospheric-realm.json
+    volumes:
+      - ./src/test/resources/keycloak/stratospheric-realm.json:/tmp/stratospheric-realm.json

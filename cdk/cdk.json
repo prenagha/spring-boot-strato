@@ -18,8 +18,7 @@
     "applicationName": "todo-app",
     "dockerRepositoryName": "todo-app",
     "dockerImageTag": "latest",
-    "applicationUrl": "https://todo-app.renaghan.net",
-    "loginPageDomainPrefix": "todo-app",
+    "loginPageDomainPrefix": "renaghan-todo",
     "applicationDomain": "todo-app.renaghan.net",
     "hostedZoneDomain": "renaghan.net",
 

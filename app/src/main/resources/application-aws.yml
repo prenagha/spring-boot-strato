@@ -1,0 +1,20 @@
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          cognito:
+            client-id: ${COGNITO_CLIENT_ID}
+            client-name: todo-app-client
+            client-secret: ${COGNITO_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+        provider:
+          cognito:
+            issuer-uri: ${COGNITO_PROVIDER_URL}
+
+# noinspection SpringBootApplicationYaml
+custom:
+  use-cognito-as-identity-provider: true

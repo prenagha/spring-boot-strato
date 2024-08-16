@@ -1,4 +1,8 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/todo-app
+    username: prenagha
+    password:
   thymeleaf:
     cache: false
     prefix: file:src/main/resources/templates/
@@ -12,13 +16,24 @@ spring:
   cloud:
     aws:
       credentials:
-        secret-key: foo
-        access-key: bar
+        secret-key: localstack
+        access-key: localstack
       endpoint: http://localhost:4566
       region:
-        static: us-east-2
+        static: us-east-1
   mvc:
     log-request-details: true
+  security:
+    oauth2:
+      client:
+        registration:
+          cognito:
+            client-id: spring-boot-application
+            client-secret: 27b07baf-53ba-42c6-b11f-6384769cada3
+            scope: openid
+        provider:
+          cognito:
+            issuer-uri: http://localhost:8888/auth/realms/stratospheric
 
 logging:
   pattern:
@@ -33,4 +48,4 @@ management:
 # noinspection SpringBootApplicationYaml
 custom:
   environment: local
-
+  use-cognito-as-identity-provider: false

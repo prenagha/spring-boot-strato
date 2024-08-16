@@ -1,17 +1,18 @@
 package com.renaghan.todo;
 
-import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@RequestMapping("/")
 public class IndexController {
 
   public IndexController() {}
 
-  @RequestMapping(method = RequestMethod.GET, path = "/")
-  public String getIndex(Principal principal) {
+  @GetMapping
+  public String getIndex() {
     return "index";
   }
 }

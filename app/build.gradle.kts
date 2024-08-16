@@ -28,14 +28,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-configuration-processor")
 
     implementation("de.siegmar:logback-awslogs-json-encoder:2.0.0")
+    implementation("io.micrometer:micrometer-registry-cloudwatch2")
 
     // monitoring endpoints
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     // auth
-    //implementation("org.springframework.boot:spring-boot-starter-security")
-    //implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-    //implementation("software.amazon.awssdk:cognitoidentityprovider")
+    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+    implementation("software.amazon.awssdk:cognitoidentityprovider")
 
     // web stuff
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")

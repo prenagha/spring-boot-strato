@@ -4,7 +4,6 @@ import dev.stratospheric.cdk.ApplicationEnvironment;
 import java.util.Arrays;
 import java.util.Collections;
 import software.amazon.awscdk.Duration;
-import software.amazon.awscdk.Environment;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.cognito.AccountRecovery;
@@ -27,37 +26,24 @@ import software.constructs.Construct;
 
 class CognitoStack extends Stack {
 
-  private final ApplicationEnvironment applicationEnvironment;
-
   private final UserPool userPool;
   private final UserPoolClient userPoolClient;
-  private final UserPoolDomain userPoolDomain;
-  private String userPoolClientSecret;
   private final String logoutUrl;
 
-  public CognitoStack(
-      final Construct scope,
-      final String id,
-      final Environment awsEnvironment,
-      final ApplicationEnvironment applicationEnvironment,
-      final CognitoInputParameters inputParameters) {
+  public CognitoStack(CDKApp app, String id) {
     super(
-        scope,
+        app,
         id,
-        StackProps.builder()
-            .stackName(applicationEnvironment.prefix("Cognito"))
-            .env(awsEnvironment)
-            .build());
+        StackProps.builder().stackName(app.appEnv().prefix("Cognito")).env(app.awsEnv()).build());
 
-    this.applicationEnvironment = applicationEnvironment;
     this.logoutUrl =
         String.format(
             "https://%s.auth.%s.amazoncognito.com/logout",
-            inputParameters.loginPageDomainPrefix, awsEnvironment.getRegion());
+            app.getContext("loginPageDomainPrefix"), app.awsEnv().getRegion());
 
     this.userPool =
         UserPool.Builder.create(this, "userPool")
-            .userPoolName(inputParameters.applicationName + "-user-pool")
+            .userPoolName(app.getContext("applicationName") + "-user-pool")
             .selfSignUpEnabled(false)
             .accountRecovery(AccountRecovery.EMAIL_ONLY)
             .autoVerify(AutoVerifiedAttrs.builder().email(true).build())
@@ -81,18 +67,16 @@ class CognitoStack extends Stack {
 
     this.userPoolClient =
         UserPoolClient.Builder.create(this, "userPoolClient")
-            .userPoolClientName(inputParameters.applicationName + "-client")
+            .userPoolClientName(app.getContext("applicationName") + "-client")
             .generateSecret(true)
             .userPool(this.userPool)
             .oAuth(
                 OAuthSettings.builder()
                     .callbackUrls(
                         Arrays.asList(
-                            String.format(
-                                "%s/login/oauth2/code/cognito", inputParameters.applicationUrl),
+                            String.format("%s/login/oauth2/code/cognito", app.getApplicationURL()),
                             "http://localhost:8080/login/oauth2/code/cognito"))
-                    .logoutUrls(
-                        Arrays.asList(inputParameters.applicationUrl, "http://localhost:8080"))
+                    .logoutUrls(Arrays.asList(app.getApplicationURL(), "http://localhost:8080"))
                     .flows(OAuthFlows.builder().authorizationCodeGrant(true).build())
                     .scopes(Arrays.asList(OAuthScope.EMAIL, OAuthScope.OPENID, OAuthScope.PROFILE))
                     .build())
@@ -100,18 +84,17 @@ class CognitoStack extends Stack {
                 Collections.singletonList(UserPoolClientIdentityProvider.COGNITO))
             .build();
 
-    this.userPoolDomain =
-        UserPoolDomain.Builder.create(this, "userPoolDomain")
-            .userPool(this.userPool)
-            .cognitoDomain(
-                CognitoDomainOptions.builder()
-                    .domainPrefix(inputParameters.loginPageDomainPrefix)
-                    .build())
-            .build();
+    UserPoolDomain.Builder.create(this, "userPoolDomain")
+        .userPool(this.userPool)
+        .cognitoDomain(
+            CognitoDomainOptions.builder()
+                .domainPrefix(app.getContext("loginPageDomainPrefix"))
+                .build())
+        .build();
 
-    createOutputParameters();
+    createOutputParameters(app);
 
-    applicationEnvironment.tag(this);
+    app.appEnv().tag(this);
   }
 
   private static final String PARAMETER_USER_POOL_ID = "userPoolId";
@@ -120,35 +103,33 @@ class CognitoStack extends Stack {
   private static final String PARAMETER_USER_POOL_LOGOUT_URL = "userPoolLogoutUrl";
   private static final String PARAMETER_USER_POOL_PROVIDER_URL = "userPoolProviderUrl";
 
-  private void createOutputParameters() {
+  private void createOutputParameters(CDKApp app) {
 
     StringParameter.Builder.create(this, PARAMETER_USER_POOL_ID)
-        .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_ID))
+        .parameterName(createParameterName(app.appEnv(), PARAMETER_USER_POOL_ID))
         .stringValue(this.userPool.getUserPoolId())
         .build();
 
     StringParameter.Builder.create(this, PARAMETER_USER_POOL_CLIENT_ID)
-        .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_ID))
+        .parameterName(createParameterName(app.appEnv(), PARAMETER_USER_POOL_CLIENT_ID))
         .stringValue(this.userPoolClient.getUserPoolClientId())
         .build();
 
     StringParameter.Builder.create(this, "logoutUrl")
-        .parameterName(createParameterName(applicationEnvironment, PARAMETER_USER_POOL_LOGOUT_URL))
+        .parameterName(createParameterName(app.appEnv(), PARAMETER_USER_POOL_LOGOUT_URL))
         .stringValue(this.logoutUrl)
         .build();
 
     StringParameter.Builder.create(this, "providerUrl")
-        .parameterName(
-            createParameterName(applicationEnvironment, PARAMETER_USER_POOL_PROVIDER_URL))
+        .parameterName(createParameterName(app.appEnv(), PARAMETER_USER_POOL_PROVIDER_URL))
         .stringValue(this.userPool.getUserPoolProviderUrl())
         .build();
 
-    this.userPoolClientSecret = this.userPoolClient.getUserPoolClientSecret().unsafeUnwrap();
+    String userPoolClientSecret = this.userPoolClient.getUserPoolClientSecret().unsafeUnwrap();
 
     StringParameter.Builder.create(this, PARAMETER_USER_POOL_CLIENT_SECRET)
-        .parameterName(
-            createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_SECRET))
-        .stringValue(this.userPoolClientSecret)
+        .parameterName(createParameterName(app.appEnv(), PARAMETER_USER_POOL_CLIENT_SECRET))
+        .stringValue(userPoolClientSecret)
         .build();
   }
 
@@ -159,15 +140,6 @@ class CognitoStack extends Stack {
         + applicationEnvironment.getApplicationName()
         + "-Cognito-"
         + parameterName;
-  }
-
-  public CognitoOutputParameters getOutputParameters() {
-    return new CognitoOutputParameters(
-        this.userPool.getUserPoolId(),
-        this.userPoolClient.getUserPoolClientId(),
-        this.userPoolClientSecret,
-        this.logoutUrl,
-        this.userPool.getUserPoolProviderUrl());
   }
 
   public static CognitoOutputParameters getOutputParametersFromParameterStore(
@@ -223,19 +195,6 @@ class CognitoStack extends Stack {
             PARAMETER_USER_POOL_CLIENT_SECRET,
             createParameterName(applicationEnvironment, PARAMETER_USER_POOL_CLIENT_SECRET))
         .getStringValue();
-  }
-
-  public static class CognitoInputParameters {
-    private final String applicationName;
-    private final String applicationUrl;
-    private final String loginPageDomainPrefix;
-
-    public CognitoInputParameters(
-        String applicationName, String applicationUrl, String loginPageDomainPrefix) {
-      this.applicationName = applicationName;
-      this.applicationUrl = applicationUrl;
-      this.loginPageDomainPrefix = loginPageDomainPrefix;
-    }
   }
 
   public record CognitoOutputParameters(

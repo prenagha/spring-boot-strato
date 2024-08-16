@@ -55,3 +55,6 @@ spring:
 error:
   handling:
     exception-logging: WITH_STACKTRACE
+
+custom:
+  invitation-codes: 11542
