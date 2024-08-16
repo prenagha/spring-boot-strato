@@ -2,7 +2,7 @@
   <configuration default="false" name="TodoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="dev" />
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
-    <module name="todo-app.app.main" />
+    <module name="TODO.app.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.renaghan.todo.TodoApplication" />
     <option name="UPDATE_ACTION_UPDATE_POLICY" value="UpdateClassesAndResources" />
     <option name="WORKING_DIRECTORY" value="file://app" />

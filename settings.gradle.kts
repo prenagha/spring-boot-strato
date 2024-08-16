@@ -5,5 +5,5 @@ pluginManagement {
     }
 }
 
-rootProject.name = "todo-app"
+rootProject.name = "TODO"
 include("cdk", "app")
