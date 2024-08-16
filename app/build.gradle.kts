@@ -36,7 +36,6 @@ dependencies {
     // auth
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-    implementation("software.amazon.awssdk:cognitoidentityprovider")
 
     // web stuff
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
@@ -46,6 +45,12 @@ dependencies {
     implementation("org.webjars:bootstrap:4.6.1")
     implementation("org.webjars:font-awesome:5.15.3")
 
+    // aws
+    implementation("io.awspring.cloud:spring-cloud-aws-starter")
+    implementation("io.awspring.cloud:spring-cloud-aws-starter-ses")
+    implementation("io.awspring.cloud:spring-cloud-aws-starter-sqs")
+    implementation("io.awspring.cloud:spring-cloud-aws-starter-dynamodb")
+    implementation("software.amazon.awssdk:cognitoidentityprovider")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
