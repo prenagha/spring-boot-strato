@@ -16,34 +16,14 @@ dependencies {
     implementation("dev.stratospheric:cdk-constructs:0.1.15")
 }
 
-tasks.register<JavaExec>("repository") {
+tasks.register<JavaExec>("infra") {
     group = "app"
-    mainClass = "com.renaghan.todo.cdk.DockerRepositoryApp"
-    classpath = project.sourceSets["main"].runtimeClasspath
-}
-tasks.register<JavaExec>("certificate") {
-    group = "app"
-    mainClass = "com.renaghan.todo.cdk.CertificateApp"
-    classpath = project.sourceSets["main"].runtimeClasspath
-}
-tasks.register<JavaExec>("network") {
-    group = "app"
-    mainClass = "com.renaghan.todo.cdk.NetworkApp"
-    classpath = project.sourceSets["main"].runtimeClasspath
-}
-tasks.register<JavaExec>("domain") {
-    group = "app"
-    mainClass = "com.renaghan.todo.cdk.DomainApp"
+    mainClass = "com.renaghan.todo.cdk.Infrastructure"
     classpath = project.sourceSets["main"].runtimeClasspath
 }
 tasks.register<JavaExec>("service") {
     group = "app"
     mainClass = "com.renaghan.todo.cdk.ServiceApp"
-    classpath = project.sourceSets["main"].runtimeClasspath
-}
-tasks.register<JavaExec>("cognito") {
-    group = "app"
-    mainClass = "com.renaghan.todo.cdk.CognitoApp"
     classpath = project.sourceSets["main"].runtimeClasspath
 }
 

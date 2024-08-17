@@ -1,5 +1,5 @@
 # This workflow builds the Docker image for the Todo-App and then deploys the application.
-name: 04 - Deploy Todo App
+name: 02 - Deploy Service
 
 env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
@@ -14,9 +14,8 @@ on:
       - 'app/Dockerfile'
       - 'app/build.gradle.kts'
       - 'cdk/src/main/**'
-      - 'cdk/build.gradle.kts'
       - 'cdk/cdk.json'
-      - '.github/workflows/04-todo-deploy.yml'
+      - '.github/workflows/02-service.yml'
   workflow_dispatch:
 jobs:
   build-and-publish:

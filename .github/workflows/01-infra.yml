@@ -1,7 +1,7 @@
 # This is a one-off workflow to set up everything we need to deploy Docker images
 # with CDK. This workflow deploys everything that is not specific to a certain
 # environment (staging, prod, ...).
-name: 01 - CDK Bootstrap and ECR
+name: 01 - CDK Infra
 
 on:
   # manually triggered from github UI
@@ -42,6 +42,6 @@ jobs:
         working-directory: cdk
         run: npm run bootstrap
 
-      - name: Deploy Docker Registry stack
+      - name: Deploy Infrastructure
         working-directory: cdk
-        run: npm run repository:deploy
+        run: npm run infra:deploy

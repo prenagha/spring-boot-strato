@@ -4,6 +4,7 @@ import static java.util.Collections.singletonList;
 
 import dev.stratospheric.cdk.Network;
 import dev.stratospheric.cdk.Service;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,6 @@ import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.iam.Effect;
 import software.amazon.awscdk.services.iam.PolicyStatement;
 
-/** CDK App */
 public class ServiceApp {
   public static void main(String[] args) {
     CDKApp app = new CDKApp();
@@ -37,8 +37,8 @@ public class ServiceApp {
     Map<String, String> vars = new HashMap<>();
     vars.put("SPRING_PROFILES_ACTIVE", app.getContext("springProfile"));
 
-    CognitoStack.CognitoOutputParameters cognitoOutputParameters =
-        CognitoStack.getOutputParametersFromParameterStore(serviceStack, app.appEnv());
+    Cognito.CognitoOutputParameters cognitoOutputParameters =
+        Cognito.getOutputParametersFromParameterStore(serviceStack, app.appEnv());
     vars.put("COGNITO_CLIENT_ID", cognitoOutputParameters.userPoolClientId());
     vars.put("COGNITO_CLIENT_SECRET", cognitoOutputParameters.userPoolClientSecret());
     vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.userPoolId());
@@ -54,30 +54,28 @@ public class ServiceApp {
             .withMemory(1024)
             .withTaskRolePolicyStatements(
                 List.of(
-                    /*
-                     PolicyStatement.Builder.create()
-                         .sid("AllowSQSAccess")
-                         .effect(Effect.ALLOW)
-                         .resources(
-                             List.of(
-                                 String.format(
-                                     "arn:aws:sqs:%s:%s:%s",
-                                     app.getContext("region"),
-                                     app.getContext("accountId"),
-                         .actions(
-                             Arrays.asList(
-                                 "sqs:DeleteMessage",
-                                 "sqs:GetQueueUrl",
-                                 "sqs:ListDeadLetterSourceQueues",
-                                 "sqs:ListQueues",
-                                 "sqs:ListQueueTags",
-                                 "sqs:ReceiveMessage",
-                                 "sqs:SendMessage",
-                                 "sqs:ChangeMessageVisibility",
-                                 "sqs:GetQueueAttributes"))
-                         .build(),
-
-                    */
+                    PolicyStatement.Builder.create()
+                        .sid("AllowSQSAccess")
+                        .effect(Effect.ALLOW)
+                        .resources(
+                            List.of(
+                                String.format(
+                                    "arn:aws:sqs:%s:%s:%s",
+                                    app.getContext("region"),
+                                    app.getContext("accountId"),
+                                    app.appEnv().prefix("todo-sharing-queue"))))
+                        .actions(
+                            Arrays.asList(
+                                "sqs:DeleteMessage",
+                                "sqs:GetQueueUrl",
+                                "sqs:ListDeadLetterSourceQueues",
+                                "sqs:ListQueues",
+                                "sqs:ListQueueTags",
+                                "sqs:ReceiveMessage",
+                                "sqs:SendMessage",
+                                "sqs:ChangeMessageVisibility",
+                                "sqs:GetQueueAttributes"))
+                        .build(),
                     PolicyStatement.Builder.create()
                         .sid("AllowCreatingUsers")
                         .effect(Effect.ALLOW)

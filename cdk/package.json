@@ -7,24 +7,11 @@
 
     "bootstrap" : "cdk bootstrap  --app '../gradlew --quiet :cdk:repository'",
 
-    "repository:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:repository' --require-approval never",
-    "repository:destroy": "cdk destroy --app '../gradlew --quiet :cdk:repository' --force --require-approval never --all",
-
-    "certificate:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:certificate' --require-approval never",
-    "certificate:destroy": "cdk destroy --app '../gradlew --quiet :cdk:certificate' --force --require-approval never --all",
-
-    "network:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:network' --require-approval never",
-    "network:destroy": "cdk destroy --app '../gradlew --quiet :cdk:network' --force --require-approval never --all",
-
-    "domain:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:domain' --require-approval never",
-    "domain:destroy": "cdk destroy --app '../gradlew --quiet :cdk:domain' --force --require-approval never --all",
+    "infra:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:infra' --require-approval never",
+    "infra:destroy": "cdk destroy --app '../gradlew --quiet :cdk:infra' --force --require-approval never --all",
 
     "service:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:service' --require-approval never",
-    "service:destroy": "cdk destroy --app '../gradlew --quiet :cdk:service' --force --require-approval never --all",
-
-    "cognito:deploy" : "cdk deploy  --app '../gradlew --quiet :cdk:cognito' --require-approval never",
-    "cognito:destroy": "cdk destroy --app '../gradlew --quiet :cdk:cognito' --force --require-approval never --all"
-
+    "service:destroy": "cdk destroy --app '../gradlew --quiet :cdk:service' --force --require-approval never --all"
   },
   "devDependencies": {
     "aws-cdk": "2.151.0"

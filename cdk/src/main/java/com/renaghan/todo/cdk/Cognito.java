@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
-import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.cognito.AccountRecovery;
 import software.amazon.awscdk.services.cognito.AutoVerifiedAttrs;
 import software.amazon.awscdk.services.cognito.CognitoDomainOptions;
@@ -24,17 +23,17 @@ import software.amazon.awscdk.services.cognito.UserPoolDomain;
 import software.amazon.awscdk.services.ssm.StringParameter;
 import software.constructs.Construct;
 
-class CognitoStack extends Stack {
+class Cognito {
 
+  private final CDKApp app;
+  private final Stack stack;
   private final UserPool userPool;
   private final UserPoolClient userPoolClient;
   private final String logoutUrl;
 
-  public CognitoStack(CDKApp app, String id) {
-    super(
-        app,
-        id,
-        StackProps.builder().stackName(app.appEnv().prefix("Cognito")).env(app.awsEnv()).build());
+  public Cognito(CDKApp app, Stack stack) {
+    this.app = app;
+    this.stack = stack;
 
     this.logoutUrl =
         String.format(
@@ -42,7 +41,7 @@ class CognitoStack extends Stack {
             app.getContext("loginPageDomainPrefix"), app.awsEnv().getRegion());
 
     this.userPool =
-        UserPool.Builder.create(this, "userPool")
+        UserPool.Builder.create(stack, "userPool")
             .userPoolName(app.getContext("applicationName") + "-user-pool")
             .selfSignUpEnabled(false)
             .accountRecovery(AccountRecovery.EMAIL_ONLY)
@@ -66,7 +65,7 @@ class CognitoStack extends Stack {
             .build();
 
     this.userPoolClient =
-        UserPoolClient.Builder.create(this, "userPoolClient")
+        UserPoolClient.Builder.create(stack, "userPoolClient")
             .userPoolClientName(app.getContext("applicationName") + "-client")
             .generateSecret(true)
             .userPool(this.userPool)
@@ -84,7 +83,7 @@ class CognitoStack extends Stack {
                 Collections.singletonList(UserPoolClientIdentityProvider.COGNITO))
             .build();
 
-    UserPoolDomain.Builder.create(this, "userPoolDomain")
+    UserPoolDomain.Builder.create(stack, "userPoolDomain")
         .userPool(this.userPool)
         .cognitoDomain(
             CognitoDomainOptions.builder()
@@ -92,9 +91,7 @@ class CognitoStack extends Stack {
                 .build())
         .build();
 
-    createOutputParameters(app);
-
-    app.appEnv().tag(this);
+    createOutputParameters();
   }
 
   private static final String PARAMETER_USER_POOL_ID = "userPoolId";
@@ -103,31 +100,31 @@ class CognitoStack extends Stack {
   private static final String PARAMETER_USER_POOL_LOGOUT_URL = "userPoolLogoutUrl";
   private static final String PARAMETER_USER_POOL_PROVIDER_URL = "userPoolProviderUrl";
 
-  private void createOutputParameters(CDKApp app) {
+  private void createOutputParameters() {
 
-    StringParameter.Builder.create(this, PARAMETER_USER_POOL_ID)
+    StringParameter.Builder.create(stack, PARAMETER_USER_POOL_ID)
         .parameterName(createParameterName(app.appEnv(), PARAMETER_USER_POOL_ID))
         .stringValue(this.userPool.getUserPoolId())
         .build();
 
-    StringParameter.Builder.create(this, PARAMETER_USER_POOL_CLIENT_ID)
+    StringParameter.Builder.create(stack, PARAMETER_USER_POOL_CLIENT_ID)
         .parameterName(createParameterName(app.appEnv(), PARAMETER_USER_POOL_CLIENT_ID))
         .stringValue(this.userPoolClient.getUserPoolClientId())
         .build();
 
-    StringParameter.Builder.create(this, "logoutUrl")
+    StringParameter.Builder.create(stack, "logoutUrl")
         .parameterName(createParameterName(app.appEnv(), PARAMETER_USER_POOL_LOGOUT_URL))
         .stringValue(this.logoutUrl)
         .build();
 
-    StringParameter.Builder.create(this, "providerUrl")
+    StringParameter.Builder.create(stack, "providerUrl")
         .parameterName(createParameterName(app.appEnv(), PARAMETER_USER_POOL_PROVIDER_URL))
         .stringValue(this.userPool.getUserPoolProviderUrl())
         .build();
 
     String userPoolClientSecret = this.userPoolClient.getUserPoolClientSecret().unsafeUnwrap();
 
-    StringParameter.Builder.create(this, PARAMETER_USER_POOL_CLIENT_SECRET)
+    StringParameter.Builder.create(stack, PARAMETER_USER_POOL_CLIENT_SECRET)
         .parameterName(createParameterName(app.appEnv(), PARAMETER_USER_POOL_CLIENT_SECRET))
         .stringValue(userPoolClientSecret)
         .build();
