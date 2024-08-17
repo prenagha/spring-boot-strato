@@ -20,7 +20,7 @@ on:
 jobs:
   build-and-publish:
     runs-on: ubuntu-20.04
-    name: Build and publish Todo App to ECR
+    name: Build App to ECR
     outputs:
       dockerImageTag: ${{ steps.dockerImageTag.outputs.tag }}
     steps:
@@ -74,7 +74,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-20.04
-    name: Deploy Todo App on ECS
+    name: Deploy App on ECS
     needs: build-and-publish
     timeout-minutes: 15
     if: github.ref == 'refs/heads/main' || contains(github.event.head_commit.message, 'DEPLOY NOW')
@@ -100,7 +100,7 @@ jobs:
         working-directory: cdk
         run: npm install
 
-      - name: Deploy Service stack
+      - name: Deploy Service
         working-directory: cdk
         run: npm run service:deploy -- -c dockerImageTag=${{ needs.build-and-publish.outputs.dockerImageTag }}
 

@@ -2,9 +2,9 @@
 <configuration>
 
   <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-  <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
 
   <springProfile name="dev">
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
     <root level="INFO">
       <appender-ref ref="CONSOLE"/>
     </root>
@@ -18,8 +18,10 @@
     <root level="INFO">
       <appender-ref ref="JSON"/>
     </root>
-    <logger name="org.springframework.messaging.simp.stomp.StompBrokerRelayMessageHandler" level="INFO"/>
-    <logger name="org.springframework.web.SimpLogging" level="INFO"/>
-    <logger name="org.springframework.web.socket.config.WebSocketMessageBrokerStats" level="WARN"/>
   </springProfile>
+
+  <logger name="org.springframework.messaging.simp.stomp.StompBrokerRelayMessageHandler" level="INFO"/>
+  <logger name="org.springframework.web.SimpLogging" level="INFO"/>
+  <logger name="org.springframework.web.socket.config.WebSocketMessageBrokerStats" level="WARN"/>
+
 </configuration>
