@@ -21,6 +21,10 @@ spring:
       endpoint: http://localhost:4566
       region:
         static: us-east-1
+  activemq:
+    password: admin
+    user: admin
+    broker-url: localhost:61613
   mvc:
     log-request-details: true
   security:
@@ -49,3 +53,7 @@ management:
 custom:
   environment: local
   use-cognito-as-identity-provider: false
+  auto-confirm-collaborations: true
+  web-socket-relay-use-ssl: false
+  provide-test-todo-controller: true
+

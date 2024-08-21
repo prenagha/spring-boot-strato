@@ -12,6 +12,8 @@ import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.iam.Effect;
 import software.amazon.awscdk.services.iam.PolicyStatement;
+import software.amazon.awscdk.services.secretsmanager.ISecret;
+import software.amazon.awscdk.services.secretsmanager.Secret;
 
 public class ServiceApp {
   public static void main(String[] args) {
@@ -35,6 +37,7 @@ public class ServiceApp {
             serviceStack, app.appEnv().getEnvironmentName());
 
     Map<String, String> vars = new HashMap<>();
+    vars.put("ENVIRONMENT_NAME", app.appEnv().getEnvironmentName());
     vars.put("SPRING_PROFILES_ACTIVE", app.getContext("springProfile"));
 
     Cognito.CognitoOutputParameters cognitoOutputParameters =
@@ -44,6 +47,29 @@ public class ServiceApp {
     vars.put("COGNITO_USER_POOL_ID", cognitoOutputParameters.userPoolId());
     vars.put("COGNITO_LOGOUT_URL", cognitoOutputParameters.logoutUrl());
     vars.put("COGNITO_PROVIDER_URL", cognitoOutputParameters.providerUrl());
+
+    Database.DatabaseOutputParameters databaseOutputParameters =
+        Database.getOutputParametersFromParameterStore(serviceStack, app.appEnv());
+    ISecret databaseSecret =
+        Secret.fromSecretCompleteArn(
+            serviceStack, "databaseSecret", databaseOutputParameters.getDatabaseSecretArn());
+    vars.put(
+        "SPRING_DATASOURCE_URL",
+        String.format(
+            "jdbc:postgresql://%s:%s/%s",
+            databaseOutputParameters.getEndpointAddress(),
+            databaseOutputParameters.getEndpointPort(),
+            databaseOutputParameters.getDbName()));
+    vars.put(
+        "SPRING_DATASOURCE_USERNAME", databaseSecret.secretValueFromJson("username").toString());
+
+    vars.put(
+        "SPRING_DATASOURCE_PASSWORD", databaseSecret.secretValueFromJson("password").toString());
+    /*
+    vars.put("WEB_SOCKET_RELAY_ENDPOINT", activeMqOutputParameters.getStompEndpoint());
+    vars.put("WEB_SOCKET_RELAY_USERNAME", activeMqOutputParameters.getActiveMqUsername());
+    vars.put("WEB_SOCKET_RELAY_PASSWORD", activeMqOutputParameters.getActiveMqPassword());
+     */
 
     Service.ServiceInputParameters inputParameters =
         new Service.ServiceInputParameters(

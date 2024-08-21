@@ -22,7 +22,8 @@ management:
       isolated-object-mapper: false
   health:
     jms:
-      enabled: false # don't verify the health of the JMS broker
+      # don't verify the health of the JMS broker
+      enabled: false
   metrics:
     tags:
       environment: ${ENVIRONMENT_NAME}
@@ -37,9 +38,11 @@ spring:
   application:
     name: todo-app
   cloud:
-    #aws: region: static: us-east-2
-    sns:
-      enabled: false
+    aws:
+      region:
+        static: us-east-2
+      sns:
+        enabled: false
   jackson:
     serialization:
       # pretty-print json
@@ -54,7 +57,13 @@ spring:
 # configuration of error-handling-spring-boot-starter (https://wimdeblauwe.github.io/error-handling-spring-boot-starter/)
 error:
   handling:
+    # noinspection SpringBootApplicationYaml
     exception-logging: WITH_STACKTRACE
 
 custom:
   invitation-codes: 11542
+  sharing-queue: ${ENVIRONMENT_NAME}-todo-app-todo-sharing-queue
+  external-url: https://${ENVIRONMENT_NAME}.todo-app.renaghan.net
+  auto-confirm-collaborations: false
+  confirm-email-from-address: noreply@stratospheric.dev
+  environment: ${ENVIRONMENT_NAME}

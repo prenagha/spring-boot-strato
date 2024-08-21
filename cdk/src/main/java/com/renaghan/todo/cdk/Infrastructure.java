@@ -2,6 +2,7 @@ package com.renaghan.todo.cdk;
 
 import dev.stratospheric.cdk.DockerRepository;
 import dev.stratospheric.cdk.Network;
+import software.amazon.awscdk.Duration;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.certificatemanager.DnsValidatedCertificate;
@@ -11,6 +12,8 @@ import software.amazon.awscdk.services.route53.HostedZoneProviderProps;
 import software.amazon.awscdk.services.route53.IHostedZone;
 import software.amazon.awscdk.services.route53.RecordTarget;
 import software.amazon.awscdk.services.route53.targets.LoadBalancerTarget;
+import software.amazon.awscdk.services.sqs.DeadLetterQueue;
+import software.amazon.awscdk.services.sqs.Queue;
 
 @SuppressWarnings("deprecation")
 public class Infrastructure {
@@ -20,8 +23,9 @@ public class Infrastructure {
   private IHostedZone hostedZone;
   private String certARN;
   private Network network;
+  private Database database;
 
-  public Infrastructure() {
+  Infrastructure() {
     this.app = new CDKApp();
     this.stack =
         new Stack(
@@ -83,12 +87,43 @@ public class Infrastructure {
     new Cognito(app, stack);
   }
 
+  private void database() {
+    this.database =
+        new Database(
+            app,
+            stack,
+            network,
+            new Database.DatabaseInputParameters()
+                .withPostgresVersion("16.4")
+                .withInstanceClass("db.t4g.micro"));
+  }
+
+  private void messaging() {
+    Queue todoSharingDlq =
+        Queue.Builder.create(stack, "todoSharingDlq")
+            .queueName(app.appEnv().prefix("todo-sharing-dead-letter-queue"))
+            .retentionPeriod(Duration.days(14))
+            .build();
+
+    Queue todoSharingQueue =
+        Queue.Builder.create(stack, "todoSharingQueue")
+            .queueName(app.appEnv().prefix("todo-sharing-queue"))
+            .visibilityTimeout(Duration.seconds(30))
+            .retentionPeriod(Duration.days(14))
+            .deadLetterQueue(
+                DeadLetterQueue.builder().queue(todoSharingDlq).maxReceiveCount(3).build())
+            .build();
+  }
+
   private void generate() {
     dockerRepo();
     cert();
     network();
     dns();
     cognito();
+    messaging();
+    database();
+    app.appEnv().tag(stack);
     app.synth();
   }
 

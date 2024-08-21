@@ -31,7 +31,7 @@ class Cognito {
   private final UserPoolClient userPoolClient;
   private final String logoutUrl;
 
-  public Cognito(CDKApp app, Stack stack) {
+  Cognito(CDKApp app, Stack stack) {
     this.app = app;
     this.stack = stack;
 

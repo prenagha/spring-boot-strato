@@ -14,11 +14,24 @@ spring:
         provider:
           cognito:
             issuer-uri: ${COGNITO_PROVIDER_URL}
+  activemq:
+    broker-url: ${WEB_SOCKET_RELAY_ENDPOINT}
+    user: ${WEB_SOCKET_RELAY_USERNAME}
+    password: ${WEB_SOCKET_RELAY_PASSWORD}
 
 logging:
   level:
     io.awspring.cloud: debug
 
+management:
+  cloudwatch:
+    metrics:
+      export:
+        enabled: false
+
 # noinspection SpringBootApplicationYaml
 custom:
   use-cognito-as-identity-provider: true
+  auto-confirm-collaborations: false
+  web-socket-relay-use-ssl: true
+  provide-test-todo-controller: false
