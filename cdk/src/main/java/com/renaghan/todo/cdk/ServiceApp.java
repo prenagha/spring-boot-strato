@@ -66,15 +66,25 @@ public class ServiceApp {
     vars.put(
         "SPRING_DATASOURCE_PASSWORD", databaseSecret.secretValueFromJson("password").toString());
     /*
+    ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters =
+      ActiveMqStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
+
     vars.put("WEB_SOCKET_RELAY_ENDPOINT", activeMqOutputParameters.getStompEndpoint());
     vars.put("WEB_SOCKET_RELAY_USERNAME", activeMqOutputParameters.getActiveMqUsername());
     vars.put("WEB_SOCKET_RELAY_PASSWORD", activeMqOutputParameters.getActiveMqPassword());
      */
 
+    List<String> securityGroupIdsToGrantIngressFromEcs =
+        Arrays.asList(
+            databaseOutputParameters.getDatabaseSecurityGroupId()
+            // ,activeMqOutputParameters.getActiveMqSecurityGroupId()
+            );
+
     Service.ServiceInputParameters inputParameters =
         new Service.ServiceInputParameters(
                 new Service.DockerImageSource(
                     app.getContext("dockerRepositoryName"), app.getContext("dockerImageTag")),
+                securityGroupIdsToGrantIngressFromEcs,
                 vars)
             .withCpu(512)
             .withMemory(1024)
