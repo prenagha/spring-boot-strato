@@ -161,7 +161,8 @@ public class ServiceApp {
                         .build()))
             .withStickySessionsEnabled(true)
             .withHealthCheckPath("/mgmt/health")
-            .withAwsLogsDateTimeFormat("%Y-%m-%dT%H:%M:%S.%f%z")
+            .withAwsLogsDateTimeFormat("")
+            // .withAwsLogsDateTimeFormat("%Y-%m-%dT%H:%M:%S.%f%z")
             // needs to be long enough to allow for slow start up with low-end computing instances
             .withHealthCheckIntervalSeconds(30);
 
