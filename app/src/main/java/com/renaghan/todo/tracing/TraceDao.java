@@ -1,7 +1,9 @@
 package com.renaghan.todo.tracing;
 
 import io.awspring.cloud.dynamodb.DynamoDbTemplate;
+import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
 import org.slf4j.Logger;
@@ -33,7 +35,7 @@ public class TraceDao {
     breadcrumb.setId(UUID.randomUUID().toString());
     breadcrumb.setUri(tracingEvent.getUri());
     breadcrumb.setUsername(tracingEvent.getUsername());
-    breadcrumb.setTimestamp(ZonedDateTime.now().toString());
+    breadcrumb.setTimestamp(Instant.now().truncatedTo(ChronoUnit.SECONDS).toString());
 
     dynamoDbTemplate.save(breadcrumb);
 
@@ -58,7 +60,8 @@ public class TraceDao {
   }
 
   public List<Breadcrumb> findUserTraceForLastTwoWeeks(String username) {
-    ZonedDateTime twoWeeksAgo = ZonedDateTime.now().minusWeeks(2);
+    Instant twoWeeksAgo =
+        ZonedDateTime.now().minusWeeks(2).toInstant().truncatedTo(ChronoUnit.SECONDS);
 
     Breadcrumb breadcrumb = new Breadcrumb();
     breadcrumb.setUsername(username);

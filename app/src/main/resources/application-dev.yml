@@ -51,9 +51,9 @@ management:
 
 # noinspection SpringBootApplicationYaml
 custom:
-  environment: local
   use-cognito-as-identity-provider: false
   auto-confirm-collaborations: true
   web-socket-relay-use-ssl: false
   provide-test-todo-controller: true
+  environment: dev
 

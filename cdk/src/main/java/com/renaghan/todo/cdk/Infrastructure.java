@@ -3,9 +3,16 @@ package com.renaghan.todo.cdk;
 import dev.stratospheric.cdk.DockerRepository;
 import dev.stratospheric.cdk.Network;
 import software.amazon.awscdk.Duration;
+import software.amazon.awscdk.RemovalPolicy;
 import software.amazon.awscdk.Stack;
 import software.amazon.awscdk.StackProps;
 import software.amazon.awscdk.services.certificatemanager.DnsValidatedCertificate;
+import software.amazon.awscdk.services.dynamodb.Attribute;
+import software.amazon.awscdk.services.dynamodb.AttributeType;
+import software.amazon.awscdk.services.dynamodb.BillingMode;
+import software.amazon.awscdk.services.dynamodb.Table;
+import software.amazon.awscdk.services.dynamodb.TableEncryption;
+import software.amazon.awscdk.services.dynamodb.TableProps;
 import software.amazon.awscdk.services.route53.ARecord;
 import software.amazon.awscdk.services.route53.HostedZone;
 import software.amazon.awscdk.services.route53.HostedZoneProviderProps;
@@ -23,7 +30,6 @@ public class Infrastructure {
   private IHostedZone hostedZone;
   private String certARN;
   private Network network;
-  private Database database;
 
   Infrastructure() {
     this.app = new CDKApp();
@@ -88,14 +94,13 @@ public class Infrastructure {
   }
 
   private void database() {
-    this.database =
-        new Database(
-            app,
-            stack,
-            network,
-            new Database.DatabaseInputParameters()
-                .withPostgresVersion("16.4")
-                .withInstanceClass("db.t4g.micro"));
+    new Database(
+        app,
+        stack,
+        network,
+        new Database.DatabaseInputParameters()
+            .withPostgresVersion("16.4")
+            .withInstanceClass("db.t4g.micro"));
   }
 
   private void messaging() {
@@ -105,18 +110,31 @@ public class Infrastructure {
             .retentionPeriod(Duration.days(14))
             .build();
 
-    Queue todoSharingQueue =
-        Queue.Builder.create(stack, "todoSharingQueue")
-            .queueName(app.appEnv().prefix("todo-sharing-queue"))
-            .visibilityTimeout(Duration.seconds(30))
-            .retentionPeriod(Duration.days(14))
-            .deadLetterQueue(
-                DeadLetterQueue.builder().queue(todoSharingDlq).maxReceiveCount(3).build())
-            .build();
+    Queue.Builder.create(stack, "todoSharingQueue")
+        .queueName(app.appEnv().prefix("todo-sharing-queue"))
+        .visibilityTimeout(Duration.seconds(30))
+        .retentionPeriod(Duration.days(14))
+        .deadLetterQueue(DeadLetterQueue.builder().queue(todoSharingDlq).maxReceiveCount(3).build())
+        .build();
   }
 
   private void activeMQ() {
     new ActiveMQ(app, stack, network);
+  }
+
+  private void dynamoDB() {
+    new Table(
+        stack,
+        "BreadcrumbsDynamoDbTable",
+        TableProps.builder()
+            .partitionKey(Attribute.builder().type(AttributeType.STRING).name("id").build())
+            .tableName(app.appEnv().prefix("breadcrumb"))
+            .encryption(TableEncryption.AWS_MANAGED)
+            .billingMode(BillingMode.PROVISIONED)
+            .readCapacity(10)
+            .writeCapacity(10)
+            .removalPolicy(RemovalPolicy.DESTROY)
+            .build());
   }
 
   private void generate() {
@@ -128,6 +146,7 @@ public class Infrastructure {
     messaging();
     database();
     activeMQ();
+    dynamoDB();
     app.appEnv().tag(stack);
     app.synth();
   }
