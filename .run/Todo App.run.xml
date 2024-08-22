@@ -1,6 +1,9 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Todo App" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
     <option name="ACTIVE_PROFILES" value="dev" />
+    <envs>
+      <env name="ENVIRONMENT_NAME" value="dev" />
+    </envs>
     <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
     <module name="TODO.app.main" />
     <option name="SPRING_BOOT_MAIN_CLASS" value="com.renaghan.todo.TodoApplication" />

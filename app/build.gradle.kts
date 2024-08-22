@@ -64,6 +64,9 @@ dependencies {
     implementation("org.apache.activemq:activemq-kahadb-store")
     implementation("org.apache.activemq:activemq-stomp")
 
+    // Fixing Console Warning on M1 Processors
+    implementation("io.netty:netty-resolver-dns-native-macos:4.1.112.Final:osx-aarch_64")
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -87,6 +90,7 @@ dependencies {
 }
 
 tasks.bootRun.configure {
+    environment = mapOf("ENVIRONMENT_NAME" to "dev")
     jvmArgs = listOf(
         "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005",
         "-Dspring.profiles.active=dev",

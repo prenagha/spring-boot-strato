@@ -1,11 +1,13 @@
 package com.renaghan.todo.config;
 
+import com.renaghan.todo.tracing.TracingEvent;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
@@ -14,6 +16,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 class LoggingContextInterceptor implements HandlerInterceptor {
 
   private final Logger logger = LoggerFactory.getLogger(LoggingContextInterceptor.class);
+  private final ApplicationEventPublisher eventPublisher;
+
+  public LoggingContextInterceptor(ApplicationEventPublisher eventPublisher) {
+    this.eventPublisher = eventPublisher;
+  }
 
   @Override
   public boolean preHandle(
@@ -23,7 +30,10 @@ class LoggingContextInterceptor implements HandlerInterceptor {
 
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
     String userId = getUserIdFromPrincipal(authentication.getPrincipal());
+    // logback context so gets in cloudwatch json logging
     MDC.put("userId", userId);
+    // event which is then async written to dynamodb breadcrumb table
+    this.eventPublisher.publishEvent(new TracingEvent(this, request.getRequestURI(), userId));
     return true;
   }
 
