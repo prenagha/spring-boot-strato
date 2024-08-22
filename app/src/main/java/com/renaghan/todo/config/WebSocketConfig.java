@@ -25,23 +25,23 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   private final Endpoint messageBrokerEndpoint;
   private final String messageBrokerUser;
   private final String messageBrokerPassword;
-  private final boolean messageBrokerUseSssl;
+  private final boolean messageBrokerUseSSL;
 
   public WebSocketConfig(
       @Value("${spring.activemq.broker-url}") String websocketRelayEndpoint,
       @Value("${spring.activemq.user}") String messageBrokerUser,
       @Value("${spring.activemq.password}") String messageBrokerPassword,
-      @Value("${custom.web-socket-relay-use-ssl:#{false}}") boolean messageBrokerUseSssl) {
+      @Value("${custom.web-socket-relay-use-ssl:#{false}}") boolean messageBrokerUseSSL) {
     this.messageBrokerEndpoint = Endpoint.fromEndpointString(websocketRelayEndpoint);
     this.messageBrokerUser = messageBrokerUser;
     this.messageBrokerPassword = messageBrokerPassword;
-    this.messageBrokerUseSssl = messageBrokerUseSssl;
+    this.messageBrokerUseSSL = messageBrokerUseSSL;
   }
 
   @Override
   public void configureMessageBroker(@NonNull MessageBrokerRegistry registry) {
     ReactorNettyTcpClient<byte[]> customTcpClient =
-        this.messageBrokerUseSssl
+        this.messageBrokerUseSSL
             ? getCustomTcpClientWithSSLSupport()
             : getCustomTcpClientWithoutSSLSupport();
 

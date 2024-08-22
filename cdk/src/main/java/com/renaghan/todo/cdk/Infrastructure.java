@@ -115,6 +115,10 @@ public class Infrastructure {
             .build();
   }
 
+  private void activeMQ() {
+    new ActiveMQ(app, stack, network);
+  }
+
   private void generate() {
     dockerRepo();
     cert();
@@ -123,6 +127,7 @@ public class Infrastructure {
     cognito();
     messaging();
     database();
+    activeMQ();
     app.appEnv().tag(stack);
     app.synth();
   }

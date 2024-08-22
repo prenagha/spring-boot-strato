@@ -52,33 +52,31 @@ public class ServiceApp {
         Database.getOutputParametersFromParameterStore(serviceStack, app.appEnv());
     ISecret databaseSecret =
         Secret.fromSecretCompleteArn(
-            serviceStack, "databaseSecret", databaseOutputParameters.getDatabaseSecretArn());
+            serviceStack, "databaseSecret", databaseOutputParameters.databaseSecretArn());
     vars.put(
         "SPRING_DATASOURCE_URL",
         String.format(
             "jdbc:postgresql://%s:%s/%s",
-            databaseOutputParameters.getEndpointAddress(),
-            databaseOutputParameters.getEndpointPort(),
-            databaseOutputParameters.getDbName()));
+            databaseOutputParameters.endpointAddress(),
+            databaseOutputParameters.endpointPort(),
+            databaseOutputParameters.dbName()));
     vars.put(
         "SPRING_DATASOURCE_USERNAME", databaseSecret.secretValueFromJson("username").toString());
 
     vars.put(
         "SPRING_DATASOURCE_PASSWORD", databaseSecret.secretValueFromJson("password").toString());
-    /*
-    ActiveMqStack.ActiveMqOutputParameters activeMqOutputParameters =
-      ActiveMqStack.getOutputParametersFromParameterStore(parametersStack, applicationEnvironment);
 
-    vars.put("WEB_SOCKET_RELAY_ENDPOINT", activeMqOutputParameters.getStompEndpoint());
-    vars.put("WEB_SOCKET_RELAY_USERNAME", activeMqOutputParameters.getActiveMqUsername());
-    vars.put("WEB_SOCKET_RELAY_PASSWORD", activeMqOutputParameters.getActiveMqPassword());
-     */
+    ActiveMQ.ActiveMqOutputParameters activeMqOutputParameters =
+        ActiveMQ.getOutputParametersFromParameterStore(serviceStack, app.appEnv());
+
+    vars.put("WEB_SOCKET_RELAY_ENDPOINT", activeMqOutputParameters.stompEndpoint());
+    vars.put("WEB_SOCKET_RELAY_USERNAME", activeMqOutputParameters.activeMqUsername());
+    vars.put("WEB_SOCKET_RELAY_PASSWORD", activeMqOutputParameters.activeMqPassword());
 
     List<String> securityGroupIdsToGrantIngressFromEcs =
         Arrays.asList(
-            databaseOutputParameters.getDatabaseSecurityGroupId()
-            // ,activeMqOutputParameters.getActiveMqSecurityGroupId()
-            );
+            databaseOutputParameters.databaseSecurityGroupId(),
+            activeMqOutputParameters.activeMqSecurityGroupId());
 
     Service.ServiceInputParameters inputParameters =
         new Service.ServiceInputParameters(

@@ -313,57 +313,11 @@ class Database {
     }
   }
 
-  public static class DatabaseOutputParameters {
-    private final String endpointAddress;
-    private final String endpointPort;
-    private final String dbName;
-    private final String databaseSecretArn;
-    private final String databaseSecurityGroupId;
-    private final String instanceId;
-
-    public DatabaseOutputParameters(
-        String endpointAddress,
-        String endpointPort,
-        String dbName,
-        String databaseSecretArn,
-        String databaseSecurityGroupId,
-        String instanceId) {
-      this.endpointAddress = endpointAddress;
-      this.endpointPort = endpointPort;
-      this.dbName = dbName;
-      this.databaseSecretArn = databaseSecretArn;
-      this.databaseSecurityGroupId = databaseSecurityGroupId;
-      this.instanceId = instanceId;
-    }
-
-    /** The URL of the Postgres instance. */
-    public String getEndpointAddress() {
-      return endpointAddress;
-    }
-
-    /** The port of the Postgres instance. */
-    public String getEndpointPort() {
-      return endpointPort;
-    }
-
-    /** The database name of the Postgres instance. */
-    public String getDbName() {
-      return dbName;
-    }
-
-    /** The secret containing username and password. */
-    public String getDatabaseSecretArn() {
-      return databaseSecretArn;
-    }
-
-    /** The database's security group. */
-    public String getDatabaseSecurityGroupId() {
-      return databaseSecurityGroupId;
-    }
-
-    /** The database's identifier. */
-    public String getInstanceId() {
-      return instanceId;
-    }
-  }
+  public record DatabaseOutputParameters(
+      String endpointAddress,
+      String endpointPort,
+      String dbName,
+      String databaseSecretArn,
+      String databaseSecurityGroupId,
+      String instanceId) {}
 }
