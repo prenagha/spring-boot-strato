@@ -3,7 +3,6 @@ package com.renaghan.todo.cdk;
 import static java.util.Collections.singletonList;
 
 import dev.stratospheric.cdk.Network;
-import dev.stratospheric.cdk.Service;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -78,9 +77,9 @@ public class ServiceApp {
             databaseOutputParameters.databaseSecurityGroupId(),
             activeMqOutputParameters.activeMqSecurityGroupId());
 
-    Service.ServiceInputParameters inputParameters =
-        new Service.ServiceInputParameters(
-                new Service.DockerImageSource(
+    ServiceStack.ServiceInputParameters inputParameters =
+        new ServiceStack.ServiceInputParameters(
+                new ServiceStack.DockerImageSource(
                     app.getContext("dockerRepositoryName"), app.getContext("dockerImageTag")),
                 securityGroupIdsToGrantIngressFromEcs,
                 vars)
@@ -161,12 +160,10 @@ public class ServiceApp {
                         .build()))
             .withStickySessionsEnabled(true)
             .withHealthCheckPath("/mgmt/health")
-            .withAwsLogsDateTimeFormat("")
-            // .withAwsLogsDateTimeFormat("%Y-%m-%dT%H:%M:%S.%f%z")
             // needs to be long enough to allow for slow start up with low-end computing instances
             .withHealthCheckIntervalSeconds(30);
 
-    new Service(
+    new ServiceStack(
         serviceStack,
         "Service",
         app.awsEnv(),
