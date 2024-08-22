@@ -32,6 +32,12 @@ server:
   compression:
     # gzip compression for http responses
     enabled: true
+  error:
+    include-binding-errors: always
+    include-exception: true
+    include-message: always
+    include-path: always
+    include-stacktrace: always
   forward-headers-strategy: framework
 
 spring:
