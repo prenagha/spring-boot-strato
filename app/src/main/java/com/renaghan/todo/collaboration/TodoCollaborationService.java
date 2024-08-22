@@ -60,25 +60,26 @@ public class TodoCollaborationService {
             .findById(collaboratorId)
             .orElseThrow(() -> new IllegalArgumentException(INVALID_PERSON_ID + collaboratorId));
 
-    if (todoCollaborationRequestRepository.findByTodoAndCollaborator(todo, collaborator) != null) {
+    TodoCollaborationRequest collaboration =
+        todoCollaborationRequestRepository.findByTodoAndCollaborator(todo, collaborator);
+
+    if (collaboration == null) {
+      collaboration = new TodoCollaborationRequest();
+      String token = UUID.randomUUID().toString();
+      collaboration.setToken(token);
+      collaboration.setCollaborator(collaborator);
+      collaboration.setTodo(todo);
+      todo.getCollaborationRequests().add(collaboration);
+      todoCollaborationRequestRepository.save(collaboration);
+    } else {
       LOG.info(
           "Collaboration request for todo {} with collaborator {} already exists",
           todoId,
           collaboratorId);
-      return collaborator.getName();
     }
 
-    LOG.info("About to share todo with id {} with collaborator {}", todoId, collaboratorId);
-
-    TodoCollaborationRequest collaboration = new TodoCollaborationRequest();
-    String token = UUID.randomUUID().toString();
-    collaboration.setToken(token);
-    collaboration.setCollaborator(collaborator);
-    collaboration.setTodo(todo);
-    todo.getCollaborationRequests().add(collaboration);
-
-    todoCollaborationRequestRepository.save(collaboration);
-
+    LOG.info(
+        "About to share todo with id {} with collaborator {} via email", todoId, collaboratorId);
     sqsTemplate.send(todoSharingQueueName, new TodoCollaborationNotification(collaboration));
 
     return collaborator.getName();

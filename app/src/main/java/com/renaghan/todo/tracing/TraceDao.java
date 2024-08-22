@@ -6,8 +6,6 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.UUID;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -19,8 +17,6 @@ import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 
 @Component
 public class TraceDao {
-
-  private static final Logger LOG = LoggerFactory.getLogger(TraceDao.class);
 
   private final DynamoDbTemplate dynamoDbTemplate;
 
@@ -38,8 +34,6 @@ public class TraceDao {
     breadcrumb.setTimestamp(Instant.now().truncatedTo(ChronoUnit.SECONDS).toString());
 
     dynamoDbTemplate.save(breadcrumb);
-
-    LOG.info("Successfully stored breadcrumb trace");
   }
 
   public List<Breadcrumb> findAllEventsForUser(String username) {

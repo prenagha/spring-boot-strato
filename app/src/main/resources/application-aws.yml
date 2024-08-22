@@ -19,10 +19,6 @@ spring:
     user: ${WEB_SOCKET_RELAY_USERNAME}
     password: ${WEB_SOCKET_RELAY_PASSWORD}
 
-logging:
-  level:
-    io.awspring.cloud: debug
-
 management:
   cloudwatch:
     metrics:
