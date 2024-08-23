@@ -40,7 +40,9 @@ class LoggingContextInterceptor implements HandlerInterceptor {
     // event which is then async written to dynamodb breadcrumb table
     this.eventPublisher.publishEvent(new TracingEvent(this, request.getRequestURI(), userId));
 
-    meterRegistry.counter("stratospheric.web.hits", Tags.of(request.getRequestURI())).increment();
+    meterRegistry
+        .counter("stratospheric.web.hits", Tags.of("uri", request.getRequestURI()))
+        .increment();
 
     return true;
   }
