@@ -127,7 +127,7 @@ public class ServiceApp {
                         .resources(
                             List.of(
                                 String.format(
-                                    "arn:aws:ses:%s:%s:identity/stratospheric.dev",
+                                    "arn:aws:ses:%s:%s:identity/renaghan.com",
                                     app.getContext("region"), app.getContext("accountId"))))
                         .actions(List.of("ses:SendEmail", "ses:SendRawEmail"))
                         .build(),
