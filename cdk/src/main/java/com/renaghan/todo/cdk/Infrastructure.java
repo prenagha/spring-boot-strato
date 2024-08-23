@@ -30,6 +30,7 @@ public class Infrastructure {
   private IHostedZone hostedZone;
   private String certARN;
   private Network network;
+  private Database database;
 
   Infrastructure() {
     this.app = new CDKApp();
@@ -94,13 +95,14 @@ public class Infrastructure {
   }
 
   private void database() {
-    new Database(
-        app,
-        stack,
-        network,
-        new Database.DatabaseInputParameters()
-            .withPostgresVersion("16.4")
-            .withInstanceClass("db.t4g.micro"));
+    this.database =
+        new Database(
+            app,
+            stack,
+            network,
+            new Database.DatabaseInputParameters()
+                .withPostgresVersion("16.4")
+                .withInstanceClass("db.t4g.micro"));
   }
 
   private void messaging() {
@@ -137,6 +139,10 @@ public class Infrastructure {
             .build());
   }
 
+  private void cloudwatch() {
+    new CloudWatchDashboard(app, stack, network, database);
+  }
+
   private void generate() {
     dockerRepo();
     cert();
@@ -147,6 +153,7 @@ public class Infrastructure {
     database();
     activeMQ();
     dynamoDB();
+    cloudwatch();
     app.appEnv().tag(stack);
     app.synth();
   }

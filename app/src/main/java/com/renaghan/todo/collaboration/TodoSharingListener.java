@@ -47,27 +47,23 @@ public class TodoSharingListener {
         new TracingEvent(
             this, "collab:request:" + payload.getTodoId(), payload.getCollaboratorEmail()));
 
-    SimpleMailMessage message = new SimpleMailMessage();
-    message.setFrom(confirmEmailFromAddress);
-    message.setTo(payload.getCollaboratorEmail());
-    message.setSubject("A todo was shared with you");
-    message.setText(
+    String body =
         String.format(
             """
-          Hi %s,\s
+    Hi %s,\s
 
-          someone shared a Todo from %s with you.
+    someone shared a Todo from %s with you.
 
-          Information about the shared Todo item:\s
+    Information about the shared Todo item:\s
 
-          Title: %s\s
-          Description: %s\s
-          Priority: %s\s
+    Title: %s\s
+    Description: %s\s
+    Priority: %s\s
 
-          You can accept the collaboration by clicking this link: %s/todo/%s/collaborations/%s/confirm?token=%s\s
+    You can accept the collaboration by clicking this link: %s/todo/%s/collaborations/%s/confirm?token=%s\s
 
-          Kind regards,\s
-          Stratospheric""",
+    Kind regards,\s
+    Renaghan todo-app""",
             payload.getCollaboratorEmail(),
             externalUrl,
             payload.getTodoTitle(),
@@ -76,10 +72,16 @@ public class TodoSharingListener {
             externalUrl,
             payload.getTodoId(),
             payload.getCollaboratorId(),
-            payload.getToken()));
+            payload.getToken());
+
+    SimpleMailMessage message = new SimpleMailMessage();
+    message.setFrom(confirmEmailFromAddress);
+    message.setTo(payload.getCollaboratorEmail());
+    message.setSubject("A todo was shared with you");
+    message.setText(body);
     mailSender.send(message);
 
-    LOG.info("Successfully informed collaborator about shared todo.");
+    LOG.info("Successfully informed collaborator about shared todo {}", body);
 
     if (autoConfirmCollaborations) {
       LOG.info("Auto-confirmed collaboration request for todo: {}", payload.getTodoId());

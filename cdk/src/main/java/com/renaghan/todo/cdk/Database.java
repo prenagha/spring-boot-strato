@@ -136,6 +136,18 @@ class Database {
     createOutputParameters();
   }
 
+  CfnSecurityGroup getSecurityGroup() {
+    return databaseSecurityGroup;
+  }
+
+  CfnDBInstance getDbInstance() {
+    return dbInstance;
+  }
+
+  ISecret getDatabaseSecret() {
+    return databaseSecret;
+  }
+
   @NotNull
   private static String createParameterName(
       ApplicationEnvironment applicationEnvironment, String parameterName) {
