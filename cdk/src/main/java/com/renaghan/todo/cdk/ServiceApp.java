@@ -128,6 +128,9 @@ public class ServiceApp {
                             List.of(
                                 String.format(
                                     "arn:aws:ses:%s:%s:identity/renaghan.com",
+                                    app.getContext("region"), app.getContext("accountId")),
+                                String.format(
+                                    "arn:aws:ses:%s:%s:configuration-set/*",
                                     app.getContext("region"), app.getContext("accountId"))))
                         .actions(List.of("ses:SendEmail", "ses:SendRawEmail"))
                         .build(),
