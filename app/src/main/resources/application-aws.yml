@@ -23,7 +23,13 @@ management:
   cloudwatch:
     metrics:
       export:
-        enabled: false
+        enabled: true
+        namespace: todo-app
+        step: 1m
+  metrics:
+    environment: ${ENVIRONMENT_NAME}
+
+
 
 # noinspection SpringBootApplicationYaml
 custom:

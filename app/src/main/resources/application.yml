@@ -1,10 +1,4 @@
 management:
-  cloudwatch:
-    metrics:
-      export:
-        enabled: true
-        namespace: todo-app
-        step: 1m
   endpoint:
     health:
       # show all on actuator info page

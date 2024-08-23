@@ -29,14 +29,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
 
-
+    // db management
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
 
+    // monitoring
     implementation("de.siegmar:logback-awslogs-json-encoder:2.0.0")
     implementation("io.micrometer:micrometer-registry-cloudwatch2")
-
-    // monitoring endpoints
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     // auth

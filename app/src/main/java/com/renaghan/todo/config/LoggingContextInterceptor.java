@@ -1,6 +1,8 @@
 package com.renaghan.todo.config;
 
 import com.renaghan.todo.tracing.TracingEvent;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tags;
 import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,9 +18,12 @@ import org.springframework.web.servlet.HandlerInterceptor;
 class LoggingContextInterceptor implements HandlerInterceptor {
 
   private final Logger logger = LoggerFactory.getLogger(LoggingContextInterceptor.class);
+  private final MeterRegistry meterRegistry;
   private final ApplicationEventPublisher eventPublisher;
 
-  public LoggingContextInterceptor(ApplicationEventPublisher eventPublisher) {
+  public LoggingContextInterceptor(
+      MeterRegistry meterRegistry, ApplicationEventPublisher eventPublisher) {
+    this.meterRegistry = meterRegistry;
     this.eventPublisher = eventPublisher;
   }
 
@@ -34,6 +39,9 @@ class LoggingContextInterceptor implements HandlerInterceptor {
     MDC.put("userId", userId);
     // event which is then async written to dynamodb breadcrumb table
     this.eventPublisher.publishEvent(new TracingEvent(this, request.getRequestURI(), userId));
+
+    meterRegistry.counter("stratospheric.web.hits", Tags.of(request.getRequestURI())).increment();
+
     return true;
   }
 
