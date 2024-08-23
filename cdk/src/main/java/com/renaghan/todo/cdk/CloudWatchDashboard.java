@@ -20,7 +20,7 @@ import software.amazon.awscdk.services.cloudwatch.TextWidget;
 
 class CloudWatchDashboard {
 
-  private static final String METRIC_NAMESPACE = "stratospheric";
+  private static final String METRIC_NAMESPACE = "todo-app";
 
   private final CDKApp app;
   private final Stack stack;
