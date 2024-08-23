@@ -141,6 +141,7 @@ public class Infrastructure {
 
   private void cloudwatch() {
     new CloudWatchDashboard(app, stack, network, database);
+    new CloudWatchAlarms(app, stack, network);
   }
 
   private void generate() {

@@ -8,14 +8,14 @@ env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
 
 on:
-  push:
-    paths:
-      - 'app/src/main/**'
-      - 'app/Dockerfile'
-      - 'app/build.gradle.kts'
-      - 'cdk/src/main/**'
-      - 'cdk/cdk.json'
-      - '.github/workflows/02-service.yml'
+#  push:
+#    paths:
+#      - 'app/src/main/**'
+#      - 'app/Dockerfile'
+#      - 'app/build.gradle.kts'
+#      - 'cdk/src/main/**'
+#      - 'cdk/cdk.json'
+#      - '.github/workflows/02-service.yml'
   workflow_dispatch:
 jobs:
   build-and-publish:
