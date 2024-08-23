@@ -55,5 +55,6 @@ custom:
   auto-confirm-collaborations: true
   web-socket-relay-use-ssl: false
   provide-test-todo-controller: true
+  confirm-email-from-address: noreply@stratospheric.dev
   environment: dev
 
