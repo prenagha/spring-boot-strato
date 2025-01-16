@@ -14,7 +14,7 @@ dependencies {
     implementation("software.amazon.awscdk:aws-cdk-lib:2.176.0")
     implementation("software.constructs:constructs:10.4.2")
     implementation("dev.stratospheric:cdk-constructs:0.1.15")
-    implementation("org.passay:passay:1.6.4")
+    implementation("org.passay:passay:1.6.6")
 }
 
 tasks.register<JavaExec>("infra") {
