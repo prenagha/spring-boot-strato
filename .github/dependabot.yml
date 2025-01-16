@@ -3,14 +3,14 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: "monthly"
 
   - package-ecosystem: "gradle"
     directory: "/app"
     schedule:
-      interval: "daily"
+      interval: "monthly"
 
   - package-ecosystem: "gradle"
     directory: "/cdk"
     schedule:
-      interval: "daily"
+      interval: "monthly"
