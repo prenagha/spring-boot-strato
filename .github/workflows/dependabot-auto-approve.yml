@@ -15,9 +15,11 @@ jobs:
         run: |
           # sets the upstream metadata for `gh pr status`
           gh pr checkout "$PR_URL"
-          if [[ "$(gh pr status --json reviewDecision -q .currentBranch.reviewDecision)" == "APPROVED" ]]; then
+          if [[ "$(gh pr status --json reviewDecision -q .currentBranch.reviewDecision)" == "APPROVED" ]]
+          then
             echo "PR already approved, skipping auto approve"
-          elsif [[ "${{steps.dependabot-metadata.outputs.update-type}}" == "version-update:semver-major" ]]; then
+          elif [[ "${{steps.dependabot-metadata.outputs.update-type}}" == "version-update:semver-major" ]]
+          then
             echo "PR contains major version upgrade, skipping auto approve"
           else
             gh pr review --approve "$PR_URL";
