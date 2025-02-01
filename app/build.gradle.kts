@@ -15,7 +15,7 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom("io.awspring.cloud:spring-cloud-aws-dependencies:3.2.1")
+        mavenBom("io.awspring.cloud:spring-cloud-aws-dependencies:3.3.0")
         mavenBom("org.testcontainers:testcontainers-bom:1.20.4")
     }
 }
@@ -75,7 +75,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:localstack")
-    testImplementation("com.codeborne:selenide:7.7.0")
+    testImplementation("com.codeborne:selenide:7.7.1")
 
     runtimeOnly("org.postgresql:postgresql")
 
