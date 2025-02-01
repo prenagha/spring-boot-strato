@@ -1,21 +1,29 @@
 name: Dependabot auto-approve
 on: pull_request
-
 permissions:
   pull-requests: write
-
 jobs:
   dependabot:
     runs-on: ubuntu-latest
     if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'prenagha/spring-boot-strato'
     steps:
       - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Approve a PR
-        run: gh pr review --approve "$PR_URL"
+        id: dependabot-metadata
+        uses: dependabot/fetch-metadata@v2
+      - uses: actions/checkout@v4
+      - name: Approve a PR if not already approved
+        run: |
+          # sets the upstream metadata for `gh pr status`
+          gh pr checkout "$PR_URL"
+          if [[ "$(gh pr status --json reviewDecision -q .currentBranch.reviewDecision)" == "APPROVED" ]]
+          then
+            echo "PR already approved, skipping auto approve"
+          elif [[ "${{steps.dependabot-metadata.outputs.update-type}}" == "version-update:semver-major" ]]
+          then
+            echo "PR contains major version upgrade, skipping auto approve"
+          else
+            gh pr review --approve "$PR_URL";
+          fi
         env:
           PR_URL: ${{github.event.pull_request.html_url}}
-          GH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
