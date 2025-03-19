@@ -2,7 +2,7 @@
 
 plugins {
     java
-    id("org.springframework.boot") version "3.4.2"
+    id("org.springframework.boot") version "3.4.3"
     id("io.spring.dependency-management") version "1.1.7"
     idea
 }
@@ -75,7 +75,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:localstack")
-    testImplementation("com.codeborne:selenide:7.7.1")
+    testImplementation("com.codeborne:selenide:7.7.3")
 
     runtimeOnly("org.postgresql:postgresql")
 
