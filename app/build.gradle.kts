@@ -75,7 +75,7 @@ dependencies {
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
     testImplementation("org.testcontainers:localstack")
-    testImplementation("com.codeborne:selenide:7.9.4")
+    testImplementation("com.codeborne:selenide:7.10.0")
 
     runtimeOnly("org.postgresql:postgresql")
 
