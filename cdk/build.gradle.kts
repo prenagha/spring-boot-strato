@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation("software.amazon.awscdk:aws-cdk-lib:2.246.0")
+    implementation("software.amazon.awscdk:aws-cdk-lib:2.252.0")
     implementation("software.constructs:constructs:10.6.0")
     implementation("dev.stratospheric:cdk-constructs:0.1.15")
     implementation("org.passay:passay:1.6.6")
