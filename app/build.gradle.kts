@@ -48,7 +48,7 @@ dependencies {
     implementation("nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect")
     implementation("org.webjars:webjars-locator-core")
     implementation("org.webjars:bootstrap:5.3.8")
-    implementation("org.webjars:font-awesome:6.7.2")
+    implementation("org.webjars:font-awesome:7.1.0")
     implementation("org.webjars:jquery:3.7.1")
     implementation("org.webjars:popper.js:2.11.7")
     implementation("org.webjars:sockjs-client:1.5.1")
